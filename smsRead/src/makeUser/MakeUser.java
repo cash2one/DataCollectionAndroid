@@ -54,7 +54,8 @@ import edu.uiowa.datacollection.sms.R;
  * 
  * @author Tom
  */
-public class MakeUser extends Activity {
+public class MakeUser extends Activity
+{
 
 	private static final String SERVER_URL = "http://128.255.45.52:7777/server/makeuser/";
 	private Button loginToFacebook;
@@ -72,7 +73,8 @@ public class MakeUser extends Activity {
 	 * This method initializes all of the pieces of the app - the dataManager,
 	 * the Facebook session, and the user interface.
 	 */
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Log.i("test", "makeUser");
@@ -83,7 +85,8 @@ public class MakeUser extends Activity {
 				.getDefaultSharedPreferences(getApplicationContext());
 
 		if (!sharedPreferences.getBoolean(
-				ConstantValues.PREFERENCE_TWITTER_IS_LOGGED_IN, false)) {
+				ConstantValues.PREFERENCE_TWITTER_IS_LOGGED_IN, false))
+		{
 			initControl();
 		}
 
@@ -93,17 +96,22 @@ public class MakeUser extends Activity {
 	 * All of the app's UI initialization goes here, it also resets all of the
 	 * UI elements
 	 */
-	private void setupUI() {
+	private void setupUI()
+	{
 		loginToFacebook = (Button) findViewById(R.id.loginToFacebookButton);
-		loginToFacebook.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+		loginToFacebook.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
 				openFacebookSession();
 			}
 		});
 
 		loginToTwitter = (Button) findViewById(R.id.loginToTwitterButton);
-		loginToTwitter.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+		loginToTwitter.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
 				SharedPreferences.Editor editor = sharedPreferences.edit();
 				editor.remove(ConstantValues.PREFERENCE_TWITTER_OAUTH_TOKEN);
 				editor.remove(ConstantValues.PREFERENCE_TWITTER_OAUTH_TOKEN_SECRET);
@@ -114,11 +122,13 @@ public class MakeUser extends Activity {
 		});
 
 		done = (Button) findViewById(R.id.doneButton);
-		done.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
+		done.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View arg0)
+			{
 				savePhoneNumber();
 				uploadData();
-				//starts alarm
+				// starts alarm
 				AlarmReceiver alarm = new AlarmReceiver();
 				alarm.setAlarm(getApplicationContext());
 				finish();
@@ -129,32 +139,39 @@ public class MakeUser extends Activity {
 		phoneLabel = (TextView) findViewById(R.id.phoneLabel);
 	}
 
-	protected void savePhoneNumber() {
+	protected void savePhoneNumber()
+	{
 
 		String filename = "phoneNumber";
 		FileOutputStream outputStream;
 
-		try {
+		try
+		{
 			outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
 			outputStream.write(phoneField.getText().toString().getBytes());
 			outputStream.close();
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
 
-	private void uploadData() {
+	private void uploadData()
+	{
 		if (Session.getActiveSession() == null || oauthText.length() == 0
 				|| oauthSecretText.length() == 0
 				|| screenNameText.length() == 0
-				|| phoneField.getText().toString().length() == 0) {
+				|| phoneField.getText().toString().length() == 0)
+		{
 			Toast.makeText(this, "Complete logins please", Toast.LENGTH_LONG)
 					.show();
 			return;
 		}
 
 		JSONObject obj = new JSONObject();
-		try {
+		try
+		{
 			obj.put("phone_number", phoneField.getText().toString());
 			obj.put("facebook_token", Session.getActiveSession()
 					.getAccessToken());
@@ -166,21 +183,30 @@ public class MakeUser extends Activity {
 			obj.put("twitter_id", twitterID);
 			System.out.println(obj.toString(1));
 
-			AsyncTask<JSONObject, Void, JSONObject> postData = new AsyncTask<JSONObject, Void, JSONObject>() {
-				protected JSONObject doInBackground(JSONObject... params) {
+			AsyncTask<JSONObject, Void, JSONObject> postData = new AsyncTask<JSONObject, Void, JSONObject>()
+			{
+				protected JSONObject doInBackground(JSONObject... params)
+				{
 					HttpPost post = new HttpPost(SERVER_URL);
 					post.setEntity(new ByteArrayEntity(params[0].toString()
 							.getBytes()));
 					HttpResponse resp = null;
 					HttpClient httpclient = new DefaultHttpClient();
-					try {
+					try
+					{
 						resp = httpclient.execute(post);
 						return readJson(resp);
-					} catch (ClientProtocolException e) {
+					}
+					catch (ClientProtocolException e)
+					{
 						e.printStackTrace();
-					} catch (IOException e) {
+					}
+					catch (IOException e)
+					{
 						e.printStackTrace();
-					} catch (JSONException e) {
+					}
+					catch (JSONException e)
+					{
 						e.printStackTrace();
 					}
 					return null;
@@ -190,38 +216,52 @@ public class MakeUser extends Activity {
 			JSONObject resp = postData.execute(obj).get();
 			System.out.println(resp);
 			Toast.makeText(this, "Thank you!", Toast.LENGTH_LONG).show();
-		} catch (JSONException e) {
+		}
+		catch (JSONException e)
+		{
 			e.printStackTrace();
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e)
+		{
 			e.printStackTrace();
-		} catch (ExecutionException e) {
+		}
+		catch (ExecutionException e)
+		{
 			e.printStackTrace();
-		} catch (IllegalStateException e) {
+		}
+		catch (IllegalStateException e)
+		{
 			e.printStackTrace();
 		}
 
 	}
 
-	private void openTwitterSession() {
+	private void openTwitterSession()
+	{
 		new TwitterAuthenticateTask().execute();
 	}
 
 	/**
 	 * This method sets up our facebook connection.
 	 */
-	private void openFacebookSession() {
+	private void openFacebookSession()
+	{
 		// Call this method if there is an authentication problem, it was only
 		// needed the first time getting the app authenticated with facebook,
 		// and remains for debugging purposes.
 		getKeyIfKeyWrong();
 
 		// start Facebook Login
-		Session.openActiveSession(this, true, new Session.StatusCallback() {
+		Session.openActiveSession(this, true, new Session.StatusCallback()
+		{
 			// callback when session changes state
 			@Override
 			public void call(Session session, SessionState state,
-					Exception exception) {
-				if (session.isOpened()) {
+					Exception exception)
+			{
+				System.out.println(session.isOpened() + ", " + state.toString());
+				if (session.isOpened())
+				{
 					ArrayList<String> permissions = new ArrayList<String>();
 					permissions.add("read_mailbox");
 					permissions.add("read_stream");
@@ -244,20 +284,29 @@ public class MakeUser extends Activity {
 	 * This method fixes some app authentication errors when run for the first
 	 * time before the app is published.
 	 */
-	private void getKeyIfKeyWrong() {
+	private void getKeyIfKeyWrong()
+	{
 		PackageInfo info = null;
-		try {
-			info = getPackageManager().getPackageInfo("edu.uiowa.datacollection.sms",
+		try
+		{
+			info = getPackageManager().getPackageInfo(
+					"edu.uiowa.datacollection.sms",
 					PackageManager.GET_SIGNATURES);
-		} catch (NameNotFoundException e1) {
+		}
+		catch (NameNotFoundException e1)
+		{
 			Log.i("ERROR:", "Couldn't make info");
 		}
 
-		for (Signature signature : info.signatures) {
+		for (Signature signature : info.signatures)
+		{
 			MessageDigest md = null;
-			try {
+			try
+			{
 				md = MessageDigest.getInstance("SHA");
-			} catch (NoSuchAlgorithmException e) {
+			}
+			catch (NoSuchAlgorithmException e)
+			{
 				Log.i("ERROR:", "Couldn't make md");
 			}
 			md.update(signature.toByteArray());
@@ -266,11 +315,13 @@ public class MakeUser extends Activity {
 		}
 	}
 
-	private void initControl() {
+	private void initControl()
+	{
 		Uri uri = getIntent().getData();
 		if (uri != null
 				&& uri.toString().startsWith(
-						ConstantValues.TWITTER_CALLBACK_URL)) {
+						ConstantValues.TWITTER_CALLBACK_URL))
+		{
 			String verifier = uri
 					.getQueryParameter(ConstantValues.URL_PARAMETER_TWITTER_OAUTH_VERIFIER);
 			TwitterGetAccessTokenTask t = new TwitterGetAccessTokenTask();
@@ -280,34 +331,41 @@ public class MakeUser extends Activity {
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode,
 				resultCode, data);
 	}
 
 	class TwitterAuthenticateTask extends
-			AsyncTask<String, String, RequestToken> {
+			AsyncTask<String, String, RequestToken>
+	{
 
 		@Override
-		protected void onPostExecute(RequestToken requestToken) {
+		protected void onPostExecute(RequestToken requestToken)
+		{
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse(requestToken.getAuthenticationURL()));
 			startActivity(intent);
 		}
 
 		@Override
-		protected RequestToken doInBackground(String... params) {
+		protected RequestToken doInBackground(String... params)
+		{
 			return TwitterUtil.getInstance().getRequestToken();
 		}
 	}
 
 	class TwitterGetAccessTokenTask extends
-			AsyncTask<String, String, AccessToken> {
+			AsyncTask<String, String, AccessToken>
+	{
 
 		@Override
-		protected void onPostExecute(AccessToken accessToken) {
-			if (accessToken == null) {
+		protected void onPostExecute(AccessToken accessToken)
+		{
+			if (accessToken == null)
+			{
 				oauthText = "";
 				oauthSecretText = "";
 				screenNameText = "";
@@ -315,7 +373,9 @@ public class MakeUser extends Activity {
 
 				System.out.println("Error with first attempt, trying again.");
 				openTwitterSession();
-			} else {
+			}
+			else
+			{
 				oauthText = (accessToken.getToken());
 				oauthSecretText = (accessToken.getTokenSecret());
 				screenNameText = (accessToken.getScreenName());
@@ -329,11 +389,13 @@ public class MakeUser extends Activity {
 		}
 
 		@Override
-		protected AccessToken doInBackground(String... params) {
+		protected AccessToken doInBackground(String... params)
+		{
 			AccessToken accessToken = TwitterUtil.getInstance().getAccessToken(
 					params[0]);
 			accessToken = TwitterUtil.getInstance().getAccessToken(params[0]);
-			if (accessToken == null) {
+			if (accessToken == null)
+			{
 				return null;
 			}
 			SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -349,10 +411,12 @@ public class MakeUser extends Activity {
 		}
 	}
 
-	private String readAll(Reader rd) throws IOException {
+	private String readAll(Reader rd) throws IOException
+	{
 		StringBuilder sb = new StringBuilder();
 		int cp;
-		while ((cp = rd.read()) != -1) {
+		while ((cp = rd.read()) != -1)
+		{
 			sb.append((char) cp);
 		}
 		return sb.toString();
