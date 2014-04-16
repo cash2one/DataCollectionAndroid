@@ -1,10 +1,9 @@
 package androidMessages;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.util.Date;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
@@ -12,23 +11,30 @@ import android.util.Log;
  */
 public class User {
 	private String user;
-
+	private Date date;
+	private Context context;
 	public User(Context context) {
+		this.context = context;
 		String user = null;
-		String filename = "phoneNumber";
-		FileInputStream InputStream;
+		SharedPreferences sharedPref = context.getApplicationContext().getSharedPreferences("mypref", 0);
+		this.user = sharedPref.getString("phoneNumber", "");
+		long temp = sharedPref.getLong("date", 0);
+		this.date = new Date(temp);
+		Log.i("test", this.user);
+	}
 
-		try {
-		  InputStream = context.openFileInput(filename);
-		  InputStreamReader inputStreamReader = new InputStreamReader(InputStream);
-		  BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-		  user = bufferedReader.readLine();
-		  InputStream.close();
-		} catch (Exception e) {
-		  e.printStackTrace();
-		}
-		Log.i("test", user);
-		this.user=user;
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		//sets date in user and in shared preferences
+		this.date = date;
+	     SharedPreferences sharedPref = context.getApplicationContext().getSharedPreferences("mypref", 0);
+	     SharedPreferences.Editor editor= sharedPref.edit();
+	     editor.putLong("date", date.getTime());
+	   //commits to save
+	     editor.commit();
 	}
 
 	public void setUser(String user) {

@@ -1,5 +1,6 @@
 package androidMessages;
 
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -46,6 +47,11 @@ public class MessageService extends IntentService {
 		}
 		//Log.i("test",uploadData.toString());
 		Upload upload = new Upload(uploadData);
-		upload.post();// json to server
+		String post = upload.post();// json to server
+		if(post.equals("worked")){
+			Date date = new Date();
+			theUser.setDate(date);
+		}
+		upload.checkForServey(this, theUser);
 	}
 }

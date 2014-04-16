@@ -1,12 +1,14 @@
 package makeUser;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
+
+import main.MainActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -56,7 +58,7 @@ import edu.uiowa.datacollection.sms.R;
  */
 public class MakeUser extends Activity {
 
-	private static final String SERVER_URL = "http://128.255.45.52:7777/server/makeuser/";
+	private static final String SERVER_URL = "http://172.23.6.179:8001/DataCollection/makeuser/";
 	private Button loginToFacebook;
 	private Button loginToTwitter;
 	private String oauthText;
@@ -116,9 +118,13 @@ public class MakeUser extends Activity {
 		done = (Button) findViewById(R.id.doneButton);
 		done.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				savePhoneNumber();
+				
 				uploadData();
-				//starts alarm
+				/*Author max
+				 * starts Alarm, saves phone number, and sets a default 
+				 * date to get all messages
+				 */
+				savePhoneNumber();
 				AlarmReceiver alarm = new AlarmReceiver();
 				alarm.setAlarm(getApplicationContext());
 				finish();
@@ -130,17 +136,19 @@ public class MakeUser extends Activity {
 	}
 
 	protected void savePhoneNumber() {
-
-		String filename = "phoneNumber";
-		FileOutputStream outputStream;
-
-		try {
-			outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-			outputStream.write(phoneField.getText().toString().getBytes());
-			outputStream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//Author Max
+	    // Create object of SharedPreferences for the save users number
+		//and a default date
+		
+	     SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("mypref", 0);
+	     SharedPreferences.Editor editor= sharedPref.edit();
+	     editor.putString("phoneNumber", phoneField.getText().toString() );
+	     // jan 1, 1970 a default to get all messages
+	     Date date = new Date(0);
+	     editor.putLong("date", date.getTime());
+	   //commits to save
+	     editor.commit();
+	     Log.i("savePhoneNumber","gotHere");
 	}
 
 	private void uploadData() {
