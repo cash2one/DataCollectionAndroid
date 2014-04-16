@@ -1,9 +1,13 @@
 package main;
 
+import java.io.File;
+
 import makeUser.MakeUser;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.content.SharedPreferences;
 
 public class MainActivity extends Activity {
 	/*
@@ -13,7 +17,14 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = new Intent(this, MakeUser.class);
-		startActivity(intent);
+		File f = new File(
+				"/data/data/edu.uiowa.datacollection.sms/shared_prefs/mypref.xml");
+		if (f.exists()) {
+			// Is registered
+		} else {
+			// needs to register
+			Intent intent = new Intent(this, MakeUser.class);
+			startActivity(intent);
+		}
 	}
 }
