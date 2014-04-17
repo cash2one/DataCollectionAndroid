@@ -28,6 +28,19 @@ public class Upload {
 	public Upload(JSONObject json) {
 		this.data = json.toString().getBytes();
 	}
+	
+	/**
+	 * 
+	 * By Tom
+	 * Empty constructor, can't be used for posting data. Its used for the
+	 * post registration activity
+	 * 
+	 */
+	public Upload()
+	{
+		
+		
+	}
 
 	public String post() {
 		HttpPost post = new HttpPost(
@@ -55,7 +68,7 @@ public class Upload {
 		}
 		return result;
 	}
-	public void checkForServey(Context context, User user) {
+	public boolean checkForServey(Context context, User user) {
 		HttpPost post = new HttpPost(
 				"http://172.23.6.179:8001/DataCollection/servey/");
 		JSONObject userID = new JSONObject();
@@ -92,6 +105,8 @@ public class Upload {
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
+			return true;
 		}
+		return false;
 	}
 }
