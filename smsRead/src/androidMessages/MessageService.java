@@ -46,7 +46,7 @@ public class MessageService extends IntentService {
 			Log.i("json", "json Exception");
 			e1.printStackTrace();
 		}
-		//Log.i("test",uploadData.toString());
+		
 		Upload upload = new Upload(uploadData);
 		String post = upload.post();// json to server
 		if(post.equals("worked")){
@@ -54,5 +54,12 @@ public class MessageService extends IntentService {
 			theUser.setDate(date);
 		}
 		upload.checkForServey(this, theUser);
+		Date token = theUser.getTokenAge();
+		Date today = new Date();
+		Date Week = new Date((token.getTime() + 604800000L));// 7 * 24 * 60 * 60 * 1000 = one week in milliseconds
+		
+		if(today.after(Week)){
+			
+		}
 	}
 }

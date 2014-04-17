@@ -27,7 +27,10 @@ public class Sms {
 	 */
 	public List<MessageU> getSms(Context context, User theUser) {
 		final String SMS_URI_ALL = "content://sms/";
+		//user is the users phone number
 		String user = theUser.getUser();
+		//date the user last upload or jan 1, 1970 by default
+		Date lastUploaded = theUser.getDate();
 		List<MessageU> messageList = new ArrayList<MessageU>();
 		try {
 			Uri uri = Uri.parse(SMS_URI_ALL);
@@ -56,6 +59,7 @@ public class Sms {
 					Date = cur.getLong(index_Date);
 					date = new Date(Date);
 					Type = cur.getInt(index_Type);
+					if(date.after(lastUploaded)){
 					if (Address != null) {
 						// remove non numbers and 1 in front of area code
 						Address = Address.replaceAll("[^0-9]", "");
@@ -76,7 +80,7 @@ public class Sms {
 						MessageU msgS = new MessageU(mID, user, destiList,
 								Body, date);
 						messageList.add(msgS);
-					}
+					}}
 				} while (cur.moveToNext());
 
 				if (cur != null) {

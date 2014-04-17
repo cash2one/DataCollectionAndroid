@@ -26,6 +26,8 @@ public class Mms {
 	 */
 	public List<MessageU> getMms(Context context, User theUser) {
 		String user = theUser.getUser();
+		//date the user last upload or jan 1, 1970 by default
+		Date lastUploaded = theUser.getDate();
 		String lastMessage = null;
 		List<MessageU> messageList = new ArrayList<MessageU>();
 		Uri mmsInboxUri = Uri.parse("content://mms");
@@ -47,6 +49,7 @@ public class Mms {
 						id = mmsInboxCursor.getInt(0);
 						Date = (mmsInboxCursor.getLong(3) * 1000);
 						date = new Date(Date);
+						if(date.after(lastUploaded)){
 						ID = Integer.toString(id);
 						msgS.setCreateTime(date);
 						msgS.setmID(ID);
@@ -85,7 +88,7 @@ public class Mms {
 							lastMessage = msgS.getText();
 							messageList.add(msgS);
 						}
-					} while (mmsInboxCursor.moveToNext());
+						}} while (mmsInboxCursor.moveToNext());
 
 				}
 			} catch (Exception e) {

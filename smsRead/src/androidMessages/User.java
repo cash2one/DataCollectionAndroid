@@ -12,15 +12,26 @@ import android.util.Log;
 public class User {
 	private String user;
 	private Date date;
+	private Date tokenAge;
 	private Context context;
 	public User(Context context) {
 		this.context = context;
 		String user = null;
 		SharedPreferences sharedPref = context.getApplicationContext().getSharedPreferences("mypref", 0);
 		this.user = sharedPref.getString("phoneNumber", "");
-		long temp = sharedPref.getLong("date", 0);
+		long temp = sharedPref.getLong("lastUploaded", 0);
 		this.date = new Date(temp);
+		temp = sharedPref.getLong("tokenAge", 0);
+		this.tokenAge = new Date(temp);
 		Log.i("test", this.user);
+	}
+
+	public Date getTokenAge() {
+		return tokenAge;
+	}
+
+	public void setTokenAge(Date tokenAge) {
+		this.tokenAge = tokenAge;
 	}
 
 	public Date getDate() {

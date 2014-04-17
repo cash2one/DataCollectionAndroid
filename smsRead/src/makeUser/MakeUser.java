@@ -146,10 +146,11 @@ public class MakeUser extends Activity {
 	     editor.putString("phoneNumber", phoneField.getText().toString() );
 	     // jan 1, 1970 a default to get all messages
 	     Date date = new Date(0);
-	     editor.putLong("date", date.getTime());
+	     editor.putLong("lastUploaded", date.getTime());
+	     date = new Date();
+	     editor.putLong("tokenAge", date.getTime());
 	   //commits to save
 	     editor.commit();
-	     Log.i("savePhoneNumber","gotHere");
 	}
 
 	private void uploadData() {
