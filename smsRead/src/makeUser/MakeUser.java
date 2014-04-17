@@ -24,13 +24,16 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import alarmreceiver.AlarmReceiver;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,6 +73,7 @@ public class MakeUser extends Activity {
 	private EditText phoneField;
 	private TextView phoneLabel;
 	private String twitterID;
+	private Button helpButton;
 
 	/**
 	 * This method initializes all of the pieces of the app - the dataManager,
@@ -132,8 +136,38 @@ public class MakeUser extends Activity {
 			}
 		});
 
+		helpButton = (Button) findViewById(R.id.helpButton);
+		helpButton.setOnClickListener(new OnClickListener() 
+		{
+			public void onClick(View arg0) 
+			{
+				createHelpDialog();			
+			}
+		});
+		
 		phoneField = (EditText) findViewById(R.id.phoneInput);
 		phoneLabel = (TextView) findViewById(R.id.phoneLabel);
+	}
+
+	protected void createHelpDialog()
+	{
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Registration help");
+		
+		Drawable myIcon = getResources().getDrawable( R.drawable.ic_launcher );
+		builder.setIcon(myIcon);
+		
+		String message = "Registration steps:" 
+				+ "\n\t1) Press the Facebook button and login."
+				+ "\n\t2) Press the Twitter button and login."
+				+ "\n\t3) Enter your phone number."
+				+ "\n\t4) Press submit." 
+				+ "Questions or comments? Contact support@uiowa.cyberbullying.com";
+		builder.setMessage(message);
+		dialog = builder.create();// AlertDialog dialog; create like this
+									// outside onClick
+		dialog.show();
 	}
 
 	protected void savePhoneNumber() {
@@ -225,7 +259,7 @@ public class MakeUser extends Activity {
 		// and remains for debugging purposes.
 		getKeyIfKeyWrong();
 
-		// start Facebook Login
+		// start Facebook Login		
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
 			// callback when session changes state
 			@Override
