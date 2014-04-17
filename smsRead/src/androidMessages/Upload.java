@@ -68,6 +68,32 @@ public class Upload {
 		}
 		return result;
 	}
+	public String postToken() {
+		HttpPost post = new HttpPost(
+				"http://172.23.6.179:8001/DataCollection/newToken/");
+		post.setEntity(new ByteArrayEntity(data));
+		HttpResponse resp = null;
+		HttpClient httpclient = new DefaultHttpClient();
+		try {
+			resp = httpclient.execute(post);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String result = null;
+		try {
+			result = EntityUtils.toString(resp.getEntity());
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	public boolean checkForServey(Context context, User user) {
 		HttpPost post = new HttpPost(
 				"http://172.23.6.179:8001/DataCollection/servey/");

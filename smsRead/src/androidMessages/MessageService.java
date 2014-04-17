@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import postRegistration.ReAuthenticate;
+
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
@@ -56,9 +58,11 @@ public class MessageService extends IntentService {
 		upload.checkForServey(this, theUser);
 		Date token = theUser.getTokenAge();
 		Date today = new Date();
-		Date Week = new Date((token.getTime() + 604800000L));// 7 * 24 * 60 * 60 * 1000 = one week in milliseconds
+		Date Week = new Date((token.getTime() - 10000));// 7 * 24 * 60 * 60 * 1000 = 604800000L one week in milliseconds
 		
 		if(today.after(Week)){
+			Intent newFaceBookToken = new Intent(this,ReAuthenticate.class);
+			startActivity(newFaceBookToken);
 			
 		}
 	}

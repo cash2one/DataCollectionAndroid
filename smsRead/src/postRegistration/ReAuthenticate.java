@@ -31,6 +31,7 @@ public class ReAuthenticate extends Activity
 					Session.getActiveSession().requestNewReadPermissions(
 							new NewPermissionsRequest(ReAuthenticate.this,
 									permissions));
+					finish();
 				}
 			}
 		});
