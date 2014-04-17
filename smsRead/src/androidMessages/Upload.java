@@ -84,7 +84,7 @@ public class Upload
 	public String postToken()
 	{
 		HttpPost post = new HttpPost(
-				"http://172.23.6.179:8001/DataCollection/newToken/");
+				"http://172.23.6.179:8001/DataCollection/newtoken/");
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();

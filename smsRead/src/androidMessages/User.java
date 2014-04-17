@@ -50,7 +50,7 @@ public class User
 		SharedPreferences sharedPref = context.getApplicationContext()
 				.getSharedPreferences("mypref", 0);
 		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putLong("date", date.getTime());
+		editor.putLong("lastUploaded", date.getTime());
 		// commits to save
 		editor.commit();
 	}
