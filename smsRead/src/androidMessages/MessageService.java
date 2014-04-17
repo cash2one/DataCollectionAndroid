@@ -75,15 +75,16 @@ public class MessageService extends IntentService
 			createNotification();
 			Log.i("HERE!!", "CMON");
 		}
-		
+
 		Log.i("SDF", "SDFS");
-		
+
 		Intent newFaceBookToken = new Intent(this, ReAuthenticate.class);
-		newFaceBookToken.putExtra("phone_number",theUser.getUser());
-			newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(newFaceBookToken);
+		newFaceBookToken.putExtra("phone_number", theUser.getUser());
+		newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(newFaceBookToken);
 
 	}
+
 	// Tom
 	private void createNotification()
 	{

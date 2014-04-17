@@ -1,7 +1,6 @@
 package makeUser;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class MakeUser extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Log.i("test", "makeUser");
+
 		// Create the user interface
 		setupUI();
 
@@ -98,7 +97,7 @@ public class MakeUser extends Activity
 		if (!sharedPreferences.getBoolean(
 				ConstantValues.PREFERENCE_TWITTER_IS_LOGGED_IN, false))
 		{
-			initControl();
+			accessTwitterAccessTokenPostAuthentication();
 		}
 
 	}
@@ -154,6 +153,9 @@ public class MakeUser extends Activity
 		phoneLabel = (TextView) findViewById(R.id.phoneLabel);
 	}
 
+	/**
+	 * Creates the Skip or Login dialog for Facebook
+	 */
 	protected void openFacebookDialog()
 	{
 		AlertDialog dialog;
@@ -196,6 +198,9 @@ public class MakeUser extends Activity
 		dialog.show();
 	}
 
+	/**
+	 * Creates the Skip or Login dialog for Twitter
+	 */
 	protected void openTwitterDialog()
 	{
 		AlertDialog dialog;
@@ -240,6 +245,9 @@ public class MakeUser extends Activity
 		dialog.show();
 	}
 
+	/**
+	 * Creates the Help dialog
+	 */
 	protected void createHelpDialog()
 	{
 		AlertDialog dialog;
@@ -273,6 +281,10 @@ public class MakeUser extends Activity
 		dialog.show();
 	}
 
+	/**
+	 * Saves the phone number, the last uploaded date, and the tokenAge so that
+	 * the Alarm knows the data and can use it.
+	 */
 	protected void savePhoneNumber()
 	{
 		// Author Max
@@ -292,8 +304,12 @@ public class MakeUser extends Activity
 		editor.commit();
 	}
 
+	/**
+	 * This method uploads all of the registration data to the server
+	 */
 	private void uploadData()
 	{
+		// Checks to see if the parts are finished
 
 		boolean twitterFinished = !(oauthText.length() == 0
 				|| oauthSecretText.length() == 0 || screenNameText.length() == 0)
@@ -301,6 +317,8 @@ public class MakeUser extends Activity
 		boolean facebookFinished = (Session.getActiveSession() != null || facebookSkipped == true)
 				|| twitterFinished;
 
+		// If twitter has finished we know facebook has to be finished, and
+		// if active session is null then we know they had to skip it
 		if (twitterFinished && (Session.getActiveSession() == null))
 			facebookSkipped = true;
 
@@ -308,6 +326,7 @@ public class MakeUser extends Activity
 				|| phoneField.getText().toString().length() == 0 || phoneField
 				.getText().toString().length() < 10);
 
+		// If they haven't finished then tell them what to do and don't upload
 		if (!facebookFinished || !twitterFinished || !phoneFinished)
 		{
 			if (!facebookFinished)
@@ -357,19 +376,7 @@ public class MakeUser extends Activity
 					{
 						resp = httpclient.execute(post);
 						String result = null;
-						try
-						{
-							result = EntityUtils.toString(resp.getEntity());
-
-						}
-						catch (ParseException e)
-						{
-							e.printStackTrace();
-						}
-						catch (IOException e)
-						{
-							e.printStackTrace();
-						}
+						result = EntityUtils.toString(resp.getEntity());
 						return result;
 					}
 					catch (ClientProtocolException e)
@@ -380,9 +387,18 @@ public class MakeUser extends Activity
 					{
 						e.printStackTrace();
 					}
+					catch (ParseException e)
+					{
+						e.printStackTrace();
+					}
 					return null;
 				}
 
+				/**
+				 * This is run once the upload has finished. If the pass result
+				 * is returned then we save the registration data and say thank
+				 * you. Otherwise it says failed and exits.
+				 */
 				protected void onPostExecute(String result)
 				{
 					System.out.println(result);
@@ -409,7 +425,10 @@ public class MakeUser extends Activity
 
 			};
 
+			// Start the upload
 			postData.execute(obj);
+
+			// Exit the activity
 			finish();
 		}
 		catch (JSONException e)
@@ -423,9 +442,11 @@ public class MakeUser extends Activity
 
 	}
 
+	/**
+	 * Starts the twitter opening sequence
+	 */
 	private void openTwitterSession()
 	{
-
 		new TwitterAuthenticateTask().execute();
 	}
 
@@ -502,7 +523,11 @@ public class MakeUser extends Activity
 		}
 	}
 
-	private void initControl()
+	/**
+	 * This method is called when the focus of of the app is returned to this
+	 * app, as opposed to the web browser.
+	 */
+	private void accessTwitterAccessTokenPostAuthentication()
 	{
 		Uri uri = getIntent().getData();
 		if (uri != null
@@ -517,6 +542,10 @@ public class MakeUser extends Activity
 		}
 	}
 
+	/**
+	 * This class is just a default Activity class, don't change it, it does
+	 * something wtih facebook.
+	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
@@ -525,7 +554,10 @@ public class MakeUser extends Activity
 				resultCode, data);
 	}
 
-	
+	/**
+	 * Internal class used for opening the browser for twitter authentication
+	 * 
+	 */
 	class TwitterAuthenticateTask extends
 			AsyncTask<String, String, RequestToken>
 	{
@@ -549,8 +581,11 @@ public class MakeUser extends Activity
 			return TwitterUtil.getInstance().getRequestToken();
 		}
 	}
-	
 
+	/**
+	 * Internal class used for accessing the access token after we have finished
+	 * authentication
+	 */
 	class TwitterGetAccessTokenTask extends
 			AsyncTask<String, String, AccessToken>
 	{
@@ -605,5 +640,4 @@ public class MakeUser extends Activity
 		}
 	}
 
-	
 }

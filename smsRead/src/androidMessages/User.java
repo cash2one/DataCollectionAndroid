@@ -4,7 +4,6 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 /**
  * Access to phone number set in the user creation activity.
@@ -26,7 +25,7 @@ public class User
 		this.date = new Date(temp);
 		temp = sharedPref.getLong("tokenAge", 0);
 		this.tokenAge = new Date(temp);
- 	}
+	}
 
 	public Date getTokenAge()
 	{

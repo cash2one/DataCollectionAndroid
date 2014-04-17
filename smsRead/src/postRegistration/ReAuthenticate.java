@@ -9,13 +9,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import androidMessages.Upload;
 
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;
 import com.facebook.SessionState;
 
+
+/**
+ * This class is used so that the access token for Facebook can be renewed.
+ * When it is created it does the facebook authentication.
+ * 
+ * 
+ */
 public class ReAuthenticate extends Activity
 {
 	public void onCreate(Bundle savedInstanceState)
@@ -45,6 +51,7 @@ public class ReAuthenticate extends Activity
 					Session.getActiveSession().requestNewReadPermissions(
 							new NewPermissionsRequest(ReAuthenticate.this,
 									permissions));
+					
 					// get phone number from intent extras
 					Bundle extras = getIntent().getExtras();
 					String number = null;
@@ -65,7 +72,7 @@ public class ReAuthenticate extends Activity
 						e1.printStackTrace();
 					}
 					final Upload newToken = new Upload(uploadData);
-					
+
 					AsyncTask<Void, Void, Void> uploader = new AsyncTask<Void, Void, Void>()
 					{
 						@Override

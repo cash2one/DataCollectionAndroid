@@ -18,9 +18,9 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		File f = new File(this.getApplicationContext().getFilesDir().getPath() + 
-				"/data/edu.uiowa.datacollection.sms/shared_prefs/mypref.xml");
+
+		File f = new File(this.getApplicationContext().getFilesDir().getPath()
+				+ "/data/edu.uiowa.datacollection.sms/shared_prefs/mypref.xml");
 		if (f.exists())
 		{
 			// Is registered
