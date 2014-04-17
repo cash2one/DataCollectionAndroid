@@ -19,83 +19,108 @@ import android.net.Uri;
 import android.util.Log;
 
 /**
- * Author Max
- * Uploads json to server
- *
+ * Author Max Uploads json to server
+ * 
  */
-public class Upload {
+public class Upload
+{
 	private byte[] data;
 
-	public Upload(JSONObject json) {
+	public Upload(JSONObject json)
+	{
 		this.data = json.toString().getBytes();
 	}
-	
+
 	/**
 	 * 
-	 * By Tom
-	 * Empty constructor, can't be used for posting data. Its used for the
-	 * post registration activity
+	 * By Tom Empty constructor, can't be used for posting data. Its used for
+	 * the post registration activity
 	 * 
 	 */
 	public Upload()
 	{
-		
-		
+
 	}
 
-	public String post() {
+	public String post()
+	{
 		HttpPost post = new HttpPost(
 				"http://172.23.6.179:8001/DataCollection/postandroid/");
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
-		try {
+		try
+		{
 			resp = httpclient.execute(post);
-		} catch (ClientProtocolException e) {
+		}
+		catch (ClientProtocolException e)
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 		String result = null;
-		try {
-			result = EntityUtils.toString(resp.getEntity());
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		try
+		{
+			if (resp != null)
+				result = EntityUtils.toString(resp.getEntity());
+		}
+		catch (ParseException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
-	public String postToken() {
+
+	public String postToken()
+	{
 		HttpPost post = new HttpPost(
 				"http://172.23.6.179:8001/DataCollection/newToken/");
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
-		try {
+		try
+		{
 			resp = httpclient.execute(post);
-		} catch (ClientProtocolException e) {
+		}
+		catch (ClientProtocolException e)
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 		String result = null;
-		try {
+		try
+		{
 			result = EntityUtils.toString(resp.getEntity());
-			
-		} catch (ParseException e) {
+
+		}
+		catch (ParseException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
 	}
-	public boolean checkForServey(Context context, User user) {
+
+	public boolean checkForServey(Context context, User user)
+	{
 		HttpPost post = new HttpPost(
 				"http://172.23.6.179:8001/DataCollection/servey/");
 		JSONObject userID = new JSONObject();
@@ -103,24 +128,34 @@ public class Upload {
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
 		String result = null;
-		try {
+		try
+		{
 			userID.put("user", user.getUser());
 			resp = httpclient.execute(post);
 			result = EntityUtils.toString(resp.getEntity());
-		}catch (JSONException e1) {
+		}
+		catch (JSONException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}catch (ClientProtocolException e) {
+		}
+		catch (ClientProtocolException e)
+		{
 			e.printStackTrace();
-		}catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (ParseException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.i("result",result);
-		if(!(result.equals("null"))){
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Log.i("result", result);
+		if (!(result.equals("null")))
+		{
 			Uri uri = Uri.parse(result);
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

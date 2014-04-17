@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
@@ -64,8 +63,8 @@ public class MakeUser extends Activity
 {
 
 	private static final String SERVER_URL = "http://172.23.6.179:8001/DataCollection/makeuser/";
-	private static final String PASS_RESULT = "PASS";
-	private static final String FAIL_RESULT = "FAIL";
+	public static final String PASS_RESULT = "PASS";
+	public static final String FAIL_RESULT = "FAIL";
 	
 	private Button loginToFacebook;
 	private Button loginToTwitter;
@@ -295,19 +294,31 @@ public class MakeUser extends Activity
 
 	private void uploadData()
 	{
-		boolean facebookFinished = Session.getActiveSession() != null
-				|| facebookSkipped == true;
+
 		boolean twitterFinished = !(oauthText.length() == 0
 				|| oauthSecretText.length() == 0 || screenNameText.length() == 0)
 				|| twitterSkipped == true;
+		boolean facebookFinished = (Session.getActiveSession() != null
+				|| facebookSkipped == true) || twitterFinished;
+		
+		if (twitterFinished && (Session.getActiveSession() == null))
+			facebookSkipped = true;
+			
 		boolean phoneFinished = !(phoneField.getText() == null
 				|| phoneField.getText().toString().length() == 0
 				|| phoneField.getText().toString().length() < 10);
 
 		if (!facebookFinished || !twitterFinished || !phoneFinished)
 		{
-			Toast.makeText(this, "Complete logins please", Toast.LENGTH_LONG)
+			if (!facebookFinished)
+				Toast.makeText(this, "Complete Facebook login", Toast.LENGTH_LONG)
 					.show();
+			if (!twitterFinished)
+				Toast.makeText(this, "Complete Twitter login", Toast.LENGTH_LONG)
+				.show();
+			if (!phoneFinished)
+				Toast.makeText(this, "Complete Phone Number", Toast.LENGTH_LONG)
+				.show();
 			return;
 		}
 
@@ -407,8 +418,10 @@ public class MakeUser extends Activity
 
 	private void openTwitterSession()
 	{
+		
 		new TwitterAuthenticateTask().execute();
 	}
+	
 
 	/**
 	 * This method sets up our facebook connection.
@@ -447,6 +460,7 @@ public class MakeUser extends Activity
 			}
 		});
 	}
+	
 
 	/**
 	 * This method fixes some app authentication errors when run for the first
@@ -483,6 +497,7 @@ public class MakeUser extends Activity
 		}
 	}
 
+	
 	private void initControl()
 	{
 		Uri uri = getIntent().getData();
@@ -591,27 +606,5 @@ public class MakeUser extends Activity
 		return sb.toString();
 	}
 
-	private JSONObject readJson(HttpResponse resp) throws IOException,
-			JSONException
-	/*
-	 * not used yet. When server is finished it will return jsonObjects for now
-	 * it returns simple strings.
-	 */
-	{
-		// InputStream is = resp.getEntity().getContent();
-		// try
-		// {
-		// BufferedReader rd = new BufferedReader(new InputStreamReader(is,
-		// Charset.forName("UTF-8")));
-		// String jsonText = readAll(rd);
-		// System.out.println(jsonText);
-		// JSONObject json = new JSONObject(jsonText);
-		// return json;
-		// }
-		// finally
-		// {
-		// is.close();
-		// }
-		return null;
-	}
+	
 }

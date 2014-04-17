@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import androidMessages.Upload;
@@ -44,23 +45,38 @@ public class ReAuthenticate extends Activity
 					Session.getActiveSession().requestNewReadPermissions(
 							new NewPermissionsRequest(ReAuthenticate.this,
 									permissions));
-					//get phone number from intent extras
+					// get phone number from intent extras
 					Bundle extras = getIntent().getExtras();
 					String number = null;
-					if (extras != null) {
-					    number = extras.getString("phone_number");
+					if (extras != null)
+					{
+						number = extras.getString("phone_number");
 					}
 					JSONObject uploadData = new JSONObject();
-					try {
+					try
+					{
 						uploadData.put("user", number);
-						uploadData.put("facebook_token", Session.getActiveSession().getAccessToken());
-					} catch (JSONException e1) {
+						uploadData.put("facebook_token", Session
+								.getActiveSession().getAccessToken());
+					}
+					catch (JSONException e1)
+					{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					Upload newToken = new Upload(uploadData);
-					newToken.postToken();
-					finish();
+					final Upload newToken = new Upload(uploadData);
+					
+					AsyncTask<Void, Void, Void> uploader = new AsyncTask<Void, Void, Void>()
+					{
+						@Override
+						protected Void doInBackground(Void... params)
+						{
+							newToken.postToken();
+							finish();
+							return null;
+						}
+					};
+					uploader.execute();
 				}
 			}
 		});
