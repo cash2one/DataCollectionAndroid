@@ -1,11 +1,10 @@
 package main;
 
-import java.io.File;
-
 import makeUser.MakeUser;
 import postRegistration.SecondaryActivity;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class MainActivity extends Activity
@@ -18,10 +17,10 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		File f = new File(this.getApplicationContext().getFilesDir().getPath()
-				+ "/data/edu.uiowa.datacollection.sms/shared_prefs/mypref.xml");
-		if (f.exists())
+		
+		SharedPreferences sharedPref = this.getApplicationContext()
+				.getSharedPreferences("mypref", 0);
+		if (sharedPref.getString("phone_number", null) != null)
 		{
 			// Is registered
 			Intent intent = new Intent(this, SecondaryActivity.class);
