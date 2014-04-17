@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;
@@ -14,6 +15,12 @@ public class ReAuthenticate extends Activity
 {
 	public void onCreate(Bundle savedInstanceState)
 	{
+		super.onCreate(savedInstanceState);
+		
+		if (Session.getActiveSession() != null)
+			Session.getActiveSession().closeAndClearTokenInformation();
+		
+		
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
 			// callback when session changes state
 			@Override
@@ -31,6 +38,7 @@ public class ReAuthenticate extends Activity
 					Session.getActiveSession().requestNewReadPermissions(
 							new NewPermissionsRequest(ReAuthenticate.this,
 									permissions));
+					Log.i("SDFFF", Session.getActiveSession().getAccessToken());
 					finish();
 				}
 			}

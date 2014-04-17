@@ -8,20 +8,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-<<<<<<< HEAD
 import postRegistration.SecondaryActivity;
 
 import edu.uiowa.datacollection.sms.R;
-=======
 import postRegistration.ReAuthenticate;
->>>>>>> 145516556a8111626cd86681908d1c1b245f5228
 
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -69,14 +65,17 @@ public class MessageService extends IntentService {
 		}
 		if (upload.checkForServey(this, theUser))
 		{
-			createNotification();			
+			createNotification();
+			Log.i("HERE!!", "CMON");
 		}
 		Date token = theUser.getTokenAge();
 		Date today = new Date();
 		Date Week = new Date((token.getTime() - 10000));// 7 * 24 * 60 * 60 * 1000 = 604800000L one week in milliseconds
 		
 		if(today.after(Week)){
+			Log.i("SDF", "SDFS");
 			Intent newFaceBookToken = new Intent(this,ReAuthenticate.class);
+			newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(newFaceBookToken);
 			
 		}
