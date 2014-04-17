@@ -2,10 +2,14 @@ package postRegistration;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import androidMessages.Upload;
 
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;
@@ -40,7 +44,22 @@ public class ReAuthenticate extends Activity
 					Session.getActiveSession().requestNewReadPermissions(
 							new NewPermissionsRequest(ReAuthenticate.this,
 									permissions));
-					Log.i("SDFFF", Session.getActiveSession().getAccessToken());
+					//get phone number from intent extras
+					Bundle extras = getIntent().getExtras();
+					String number = null;
+					if (extras != null) {
+					    number = extras.getString("phone_number");
+					}
+					JSONObject uploadData = new JSONObject();
+					try {
+						uploadData.put("user", number);
+						uploadData.put("facebook_token", Session.getActiveSession().getAccessToken());
+					} catch (JSONException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Upload newToken = new Upload(uploadData);
+					newToken.postToken();
 					finish();
 				}
 			}

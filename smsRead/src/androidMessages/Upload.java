@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.util.Log;
 
 /**
+ * Author Max
  * Uploads json to server
  *
  */
@@ -98,27 +99,20 @@ public class Upload {
 		HttpPost post = new HttpPost(
 				"http://172.23.6.179:8001/DataCollection/servey/");
 		JSONObject userID = new JSONObject();
-		try {
-			userID.put("user", user.getUser());
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		post.setEntity(new ByteArrayEntity(userID.toString().getBytes()));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
-		try {
-			resp = httpclient.execute(post);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		String result = null;
 		try {
+			userID.put("user", user.getUser());
+			resp = httpclient.execute(post);
 			result = EntityUtils.toString(resp.getEntity());
-			
-		} catch (ParseException e) {
+		}catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}catch (ClientProtocolException e) {
+			e.printStackTrace();
+		}catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {

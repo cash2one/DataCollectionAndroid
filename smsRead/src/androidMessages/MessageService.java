@@ -85,18 +85,19 @@ public class MessageService extends IntentService
 		{
 			Log.i("SDF", "SDFS");
 			Intent newFaceBookToken = new Intent(this, ReAuthenticate.class);
+			newFaceBookToken.putExtra("phone_number",theUser.getUser());
 			newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(newFaceBookToken);
 
 		}
 	}
-
+	// Tom
 	private void createNotification()
 	{
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				this).setSmallIcon(R.drawable.notif_icon)
-				.setContentTitle("My notification")
-				.setContentText("Hello World!");
+				.setContentTitle("Survey")
+				.setContentText("Please complete the survey");
 		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(this, SecondaryActivity.class);
 

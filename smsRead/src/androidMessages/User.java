@@ -26,8 +26,7 @@ public class User
 		this.date = new Date(temp);
 		temp = sharedPref.getLong("tokenAge", 0);
 		this.tokenAge = new Date(temp);
-		Log.i("test", this.user);
-	}
+ 	}
 
 	public Date getTokenAge()
 	{
