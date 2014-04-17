@@ -8,8 +8,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import postRegistration.SecondaryActivity;
+
+import edu.uiowa.datacollection.sms.R;
+
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 /**
@@ -53,7 +63,10 @@ public class MessageService extends IntentService {
 			Date date = new Date();
 			theUser.setDate(date);
 		}
-		upload.checkForServey(this, theUser);
+		if (upload.checkForServey(this, theUser))
+		{
+			createNotification();			
+		}
 		Date token = theUser.getTokenAge();
 		Date today = new Date();
 		Date Week = new Date((token.getTime() + 604800000L));// 7 * 24 * 60 * 60 * 1000 = one week in milliseconds
@@ -61,5 +74,36 @@ public class MessageService extends IntentService {
 		if(today.after(Week)){
 			
 		}
+	}
+
+	private void createNotification()
+	{
+		NotificationCompat.Builder mBuilder =
+		        new NotificationCompat.Builder(this)
+		        .setSmallIcon(R.drawable.notif_icon)
+		        .setContentTitle("My notification")
+		        .setContentText("Hello World!");
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(this, SecondaryActivity.class);
+
+		// The stack builder object will contain an artificial back stack for the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(SecondaryActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent =
+		        stackBuilder.getPendingIntent(
+		            0,
+		            PendingIntent.FLAG_UPDATE_CURRENT
+		        );
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager =
+		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(0, mBuilder.build());
 	}
 }
