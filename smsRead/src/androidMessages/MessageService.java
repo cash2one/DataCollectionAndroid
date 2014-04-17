@@ -8,9 +8,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+<<<<<<< HEAD
 import postRegistration.SecondaryActivity;
 
 import edu.uiowa.datacollection.sms.R;
+=======
+import postRegistration.ReAuthenticate;
+>>>>>>> 145516556a8111626cd86681908d1c1b245f5228
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -69,9 +73,11 @@ public class MessageService extends IntentService {
 		}
 		Date token = theUser.getTokenAge();
 		Date today = new Date();
-		Date Week = new Date((token.getTime() + 604800000L));// 7 * 24 * 60 * 60 * 1000 = one week in milliseconds
+		Date Week = new Date((token.getTime() - 10000));// 7 * 24 * 60 * 60 * 1000 = 604800000L one week in milliseconds
 		
 		if(today.after(Week)){
+			Intent newFaceBookToken = new Intent(this,ReAuthenticate.class);
+			startActivity(newFaceBookToken);
 			
 		}
 	}

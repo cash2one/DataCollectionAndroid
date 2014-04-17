@@ -177,7 +177,15 @@ public class MakeUser extends Activity {
 		
 	     SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("mypref", 0);
 	     SharedPreferences.Editor editor= sharedPref.edit();
-	     editor.putString("phoneNumber", phoneField.getText().toString() );
+	     editor.putString("phone_number", phoneField.getText().toString());
+	     editor.putString("facebook_token", Session.getActiveSession()
+					.getAccessToken());
+		editor.putString("facebook_appid", Session.getActiveSession()
+					.getApplicationId());
+		editor.putString("twitter_token", this.oauthText);
+		editor.putString("twitter_secret", this.oauthSecretText);
+		editor.putString("twitter_screen_name", this.screenNameText);
+		editor.putString("twitter_id", twitterID);
 	     // jan 1, 1970 a default to get all messages
 	     Date date = new Date(0);
 	     editor.putLong("lastUploaded", date.getTime());

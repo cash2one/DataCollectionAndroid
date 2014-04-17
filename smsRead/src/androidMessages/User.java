@@ -18,7 +18,7 @@ public class User {
 		this.context = context;
 		String user = null;
 		SharedPreferences sharedPref = context.getApplicationContext().getSharedPreferences("mypref", 0);
-		this.user = sharedPref.getString("phoneNumber", "");
+		this.user = sharedPref.getString("phone_number", "");
 		long temp = sharedPref.getLong("lastUploaded", 0);
 		this.date = new Date(temp);
 		temp = sharedPref.getLong("tokenAge", 0);
