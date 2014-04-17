@@ -65,7 +65,7 @@ public class MakeUser extends Activity
 	private static final String SERVER_URL = "http://172.23.6.179:8001/DataCollection/makeuser/";
 	public static final String PASS_RESULT = "PASS";
 	public static final String FAIL_RESULT = "FAIL";
-	
+
 	private Button loginToFacebook;
 	private Button loginToTwitter;
 	private String oauthText = "";
@@ -282,7 +282,7 @@ public class MakeUser extends Activity
 		SharedPreferences sharedPref = getApplicationContext()
 				.getSharedPreferences("mypref", 0);
 		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putString("phoneNumber", phoneField.getText().toString());
+		editor.putString("phone_number", phoneField.getText().toString());
 		// jan 1, 1970 a default to get all messages
 		Date date = new Date(0);
 		editor.putLong("lastUploaded", date.getTime());
@@ -298,27 +298,27 @@ public class MakeUser extends Activity
 		boolean twitterFinished = !(oauthText.length() == 0
 				|| oauthSecretText.length() == 0 || screenNameText.length() == 0)
 				|| twitterSkipped == true;
-		boolean facebookFinished = (Session.getActiveSession() != null
-				|| facebookSkipped == true) || twitterFinished;
-		
+		boolean facebookFinished = (Session.getActiveSession() != null || facebookSkipped == true)
+				|| twitterFinished;
+
 		if (twitterFinished && (Session.getActiveSession() == null))
 			facebookSkipped = true;
-			
+
 		boolean phoneFinished = !(phoneField.getText() == null
-				|| phoneField.getText().toString().length() == 0
-				|| phoneField.getText().toString().length() < 10);
+				|| phoneField.getText().toString().length() == 0 || phoneField
+				.getText().toString().length() < 10);
 
 		if (!facebookFinished || !twitterFinished || !phoneFinished)
 		{
 			if (!facebookFinished)
-				Toast.makeText(this, "Complete Facebook login", Toast.LENGTH_LONG)
-					.show();
+				Toast.makeText(this, "Complete Facebook login",
+						Toast.LENGTH_LONG).show();
 			if (!twitterFinished)
-				Toast.makeText(this, "Complete Twitter login", Toast.LENGTH_LONG)
-				.show();
+				Toast.makeText(this, "Complete Twitter login",
+						Toast.LENGTH_LONG).show();
 			if (!phoneFinished)
 				Toast.makeText(this, "Complete Phone Number", Toast.LENGTH_LONG)
-				.show();
+						.show();
 			return;
 		}
 
@@ -326,7 +326,7 @@ public class MakeUser extends Activity
 		try
 		{
 			obj.put("phone_number", phoneField.getText().toString());
-			
+
 			String token = "";
 			String appId = "";
 			if (!facebookSkipped)
@@ -334,10 +334,10 @@ public class MakeUser extends Activity
 				token = Session.getActiveSession().getAccessToken();
 				appId = Session.getActiveSession().getApplicationId();
 			}
-			
+
 			obj.put("facebook_token", token);
 			obj.put("facebook_appid", appId);
-			
+
 			obj.put("twitter_token", this.oauthText);
 			obj.put("twitter_secret", this.oauthSecretText);
 			obj.put("twitter_screen_name", this.screenNameText);
@@ -357,12 +357,17 @@ public class MakeUser extends Activity
 					{
 						resp = httpclient.execute(post);
 						String result = null;
-						try {
+						try
+						{
 							result = EntityUtils.toString(resp.getEntity());
-							
-						} catch (ParseException e) {
+
+						}
+						catch (ParseException e)
+						{
 							e.printStackTrace();
-						} catch (IOException e) {
+						}
+						catch (IOException e)
+						{
 							e.printStackTrace();
 						}
 						return result;
@@ -383,20 +388,22 @@ public class MakeUser extends Activity
 					System.out.println(result);
 					if (result.equals(PASS_RESULT))
 					{
-						Toast.makeText(MakeUser.this, "Thank you!", Toast.LENGTH_LONG).show();
-	
+						Toast.makeText(MakeUser.this, "Thank you!",
+								Toast.LENGTH_LONG).show();
+
 						/*
-						 * Author max starts Alarm, saves phone number, and sets a default date
-						 * to get all messages
+						 * Author max starts Alarm, saves phone number, and sets
+						 * a default date to get all messages
 						 */
 						savePhoneNumber();
 						AlarmReceiver alarm = new AlarmReceiver();
 						alarm.setAlarm(getApplicationContext());
-						
+
 					}
 					else
 					{
-						Toast.makeText(MakeUser.this, "Failed upload", Toast.LENGTH_LONG).show();
+						Toast.makeText(MakeUser.this, "Failed upload",
+								Toast.LENGTH_LONG).show();
 					}
 				}
 
@@ -418,10 +425,9 @@ public class MakeUser extends Activity
 
 	private void openTwitterSession()
 	{
-		
+
 		new TwitterAuthenticateTask().execute();
 	}
-	
 
 	/**
 	 * This method sets up our facebook connection.
@@ -460,7 +466,6 @@ public class MakeUser extends Activity
 			}
 		});
 	}
-	
 
 	/**
 	 * This method fixes some app authentication errors when run for the first
@@ -497,7 +502,6 @@ public class MakeUser extends Activity
 		}
 	}
 
-	
 	private void initControl()
 	{
 		Uri uri = getIntent().getData();
@@ -521,6 +525,7 @@ public class MakeUser extends Activity
 				resultCode, data);
 	}
 
+	
 	class TwitterAuthenticateTask extends
 			AsyncTask<String, String, RequestToken>
 	{
@@ -530,7 +535,12 @@ public class MakeUser extends Activity
 		{
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse(requestToken.getAuthenticationURL()));
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+			intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
 			startActivity(intent);
+			finish();
 		}
 
 		@Override
@@ -539,6 +549,7 @@ public class MakeUser extends Activity
 			return TwitterUtil.getInstance().getRequestToken();
 		}
 	}
+	
 
 	class TwitterGetAccessTokenTask extends
 			AsyncTask<String, String, AccessToken>
@@ -592,18 +603,6 @@ public class MakeUser extends Activity
 			editor.commit();
 			return accessToken;
 		}
-	}
-
-	@SuppressWarnings("unused")
-	private String readAll(Reader rd) throws IOException
-	{
-		StringBuilder sb = new StringBuilder();
-		int cp;
-		while ((cp = rd.read()) != -1)
-		{
-			sb.append((char) cp);
-		}
-		return sb.toString();
 	}
 
 	
