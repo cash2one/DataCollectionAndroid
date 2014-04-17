@@ -23,8 +23,8 @@ public class SecondaryActivity extends Activity
 	private Button reOpenSurvey;
 	private Button getHelpButton;
 	private Button reportButton;
-	private static String HELP_URL = "http://172.23.6.179:8001/DataCollection/servey/";
-	private static String REPORT_URL = "http://172.23.6.179:8001/DataCollection/servey/";
+	private static String HELP_URL = "http://172.23.6.179:8001/DataCollection/gethelp/";
+	private static String REPORT_URL = "http://172.23.6.179:8001/DataCollection/reportbullying/";
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -82,7 +82,7 @@ public class SecondaryActivity extends Activity
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		this.startActivity(intent);
 	}
-	
+
 	protected void report()
 	{
 		Uri uri = Uri.parse(REPORT_URL);
@@ -103,13 +103,14 @@ public class SecondaryActivity extends Activity
 			{
 				return upload.checkForServey(context, theUser);
 			}
-			
+
 		};
 		try
 		{
 			if (!notOnMainThread.execute().get())
 			{
-				Toast.makeText(context,
+				Toast.makeText(
+						context,
 						"Thanks for checking but you've finished all the surveys!",
 						Toast.LENGTH_LONG).show();
 			}
@@ -124,7 +125,7 @@ public class SecondaryActivity extends Activity
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	protected void reRegister()

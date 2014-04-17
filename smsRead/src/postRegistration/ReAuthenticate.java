@@ -16,17 +16,19 @@ public class ReAuthenticate extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+
 		if (Session.getActiveSession() != null)
 			Session.getActiveSession().closeAndClearTokenInformation();
-		
-		
-		Session.openActiveSession(this, true, new Session.StatusCallback() {
+
+		Session.openActiveSession(this, true, new Session.StatusCallback()
+		{
 			// callback when session changes state
 			@Override
 			public void call(Session session, SessionState state,
-					Exception exception) {
-				if (session.isOpened()) {
+					Exception exception)
+			{
+				if (session.isOpened())
+				{
 					ArrayList<String> permissions = new ArrayList<String>();
 					permissions.add("read_mailbox");
 					permissions.add("read_stream");
@@ -44,9 +46,10 @@ public class ReAuthenticate extends Activity
 			}
 		});
 	}
-	
+
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode,
 				resultCode, data);

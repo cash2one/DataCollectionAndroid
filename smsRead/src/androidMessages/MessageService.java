@@ -1,4 +1,3 @@
-
 package androidMessages;
 
 import java.util.Date;
@@ -27,12 +26,15 @@ import android.util.Log;
  * uploading on its on worker thread.
  * 
  */
-public class MessageService extends IntentService {
-	public MessageService() {
+public class MessageService extends IntentService
+{
+	public MessageService()
+	{
 		super("MessageService");
 	}
 
-	protected void onHandleIntent(Intent intent) {
+	protected void onHandleIntent(Intent intent)
+	{
 		Sms sms = new Sms();
 		Mms mms = new Mms();
 		User theUser = new User(this);
@@ -45,21 +47,26 @@ public class MessageService extends IntentService {
 		List<Conversation> conversationList = conversationConstruct
 				.construct(smsMessages);// messages to conversations
 		JSONArray arr = new JSONArray();
-		for (Conversation conversation : conversationList) {
+		for (Conversation conversation : conversationList)
+		{
 			arr.put(conversation.toJson());// conversations to json
 		}
 		JSONObject uploadData = new JSONObject();
-		try {
+		try
+		{
 			uploadData.put("conversation", arr);
 			uploadData.put("user", theUser.getUser());
-		} catch (JSONException e1) {
+		}
+		catch (JSONException e1)
+		{
 			Log.i("json", "json Exception");
 			e1.printStackTrace();
 		}
-		
+
 		Upload upload = new Upload(uploadData);
 		String post = upload.post();// json to server
-		if(post.equals("worked")){
+		if (post.equals("worked"))
+		{
 			Date date = new Date();
 			theUser.setDate(date);
 		}
@@ -70,28 +77,31 @@ public class MessageService extends IntentService {
 		}
 		Date token = theUser.getTokenAge();
 		Date today = new Date();
-		Date Week = new Date((token.getTime() - 10000));// 7 * 24 * 60 * 60 * 1000 = 604800000L one week in milliseconds
-		
-		if(today.after(Week)){
+		Date Week = new Date((token.getTime() - 10000));// 7 * 24 * 60 * 60 *
+														// 1000 = 604800000L one
+														// week in milliseconds
+
+		if (today.after(Week))
+		{
 			Log.i("SDF", "SDFS");
-			Intent newFaceBookToken = new Intent(this,ReAuthenticate.class);
+			Intent newFaceBookToken = new Intent(this, ReAuthenticate.class);
 			newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(newFaceBookToken);
-			
+
 		}
 	}
 
 	private void createNotification()
 	{
-		NotificationCompat.Builder mBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(R.drawable.notif_icon)
-		        .setContentTitle("My notification")
-		        .setContentText("Hello World!");
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(R.drawable.notif_icon)
+				.setContentTitle("My notification")
+				.setContentText("Hello World!");
 		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(this, SecondaryActivity.class);
 
-		// The stack builder object will contain an artificial back stack for the
+		// The stack builder object will contain an artificial back stack for
+		// the
 		// started Activity.
 		// This ensures that navigating backward from the Activity leads out of
 		// your application to the Home screen.
@@ -100,14 +110,10 @@ public class MessageService extends IntentService {
 		stackBuilder.addParentStack(SecondaryActivity.class);
 		// Adds the Intent that starts the Activity to the top of the stack
 		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent =
-		        stackBuilder.getPendingIntent(
-		            0,
-		            PendingIntent.FLAG_UPDATE_CURRENT
-		        );
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		mBuilder.setContentIntent(resultPendingIntent);
-		NotificationManager mNotificationManager =
-		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(0, mBuilder.build());
 	}
