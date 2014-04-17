@@ -18,19 +18,22 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		File f = new File(
-				"/data/data/edu.uiowa.datacollection.sms/shared_prefs/mypref.xml");
+		
+		File f = new File(this.getApplicationContext().getFilesDir().getPath() + 
+				"/data/edu.uiowa.datacollection.sms/shared_prefs/mypref.xml");
 		if (f.exists())
 		{
 			// Is registered
 			Intent intent = new Intent(this, SecondaryActivity.class);
 			startActivity(intent);
+			finish();
 		}
 		else
 		{
 			// needs to register
 			Intent intent = new Intent(this, MakeUser.class);
 			startActivity(intent);
+			finish();
 		}
 	}
 }

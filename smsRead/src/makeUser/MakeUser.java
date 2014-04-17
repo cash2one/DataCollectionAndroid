@@ -9,11 +9,13 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,17 +64,22 @@ public class MakeUser extends Activity
 {
 
 	private static final String SERVER_URL = "http://172.23.6.179:8001/DataCollection/makeuser/";
+	private static final String PASS_RESULT = "PASS";
+	private static final String FAIL_RESULT = "FAIL";
+	
 	private Button loginToFacebook;
 	private Button loginToTwitter;
-	private String oauthText;
-	private String oauthSecretText;
-	private String screenNameText;
+	private String oauthText = "";
+	private String oauthSecretText = "";
+	private String screenNameText = "";
 	private Button done;
 	private SharedPreferences sharedPreferences;
 	private EditText phoneField;
 	private TextView phoneLabel;
 	private String twitterID;
 	private Button helpButton;
+	private boolean facebookSkipped;
+	private boolean twitterSkipped;
 
 	/**
 	 * This method initializes all of the pieces of the app - the dataManager,
@@ -108,7 +115,7 @@ public class MakeUser extends Activity
 		{
 			public void onClick(View v)
 			{
-				openFacebookSession();
+				openFacebookDialog();
 			}
 		});
 
@@ -122,7 +129,7 @@ public class MakeUser extends Activity
 				editor.remove(ConstantValues.PREFERENCE_TWITTER_OAUTH_TOKEN_SECRET);
 				editor.remove(ConstantValues.PREFERENCE_TWITTER_IS_LOGGED_IN);
 				editor.commit();
-				openTwitterSession();
+				openTwitterDialog();
 			}
 		});
 
@@ -131,16 +138,7 @@ public class MakeUser extends Activity
 		{
 			public void onClick(View arg0)
 			{
-
 				uploadData();
-				/*
-				 * Author max starts Alarm, saves phone number, and sets a
-				 * default date to get all messages
-				 */
-				savePhoneNumber();
-				AlarmReceiver alarm = new AlarmReceiver();
-				alarm.setAlarm(getApplicationContext());
-				finish();
 			}
 		});
 
@@ -155,6 +153,92 @@ public class MakeUser extends Activity
 
 		phoneField = (EditText) findViewById(R.id.phoneInput);
 		phoneLabel = (TextView) findViewById(R.id.phoneLabel);
+	}
+
+	protected void openFacebookDialog()
+	{
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Facebook Login");
+
+		Drawable myIcon = getResources().getDrawable(R.drawable.ic_launcher);
+
+		BitmapDrawable bd = (BitmapDrawable) myIcon;
+		Bitmap bitmapResized = Bitmap.createScaledBitmap(bd.getBitmap(), 50,
+				50, false);
+		Drawable icon = new BitmapDrawable(getResources(), bitmapResized);
+
+		builder.setIcon(icon);
+
+		String message = "As part of the study you are required to log into Facebook."
+				+ "\nIf you do not have a Facebook, press 'Skip'";
+		builder.setMessage(message);
+		builder.setPositiveButton("Login",
+				new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						openFacebookSession();
+					}
+				});
+		builder.setNegativeButton("Skip", new DialogInterface.OnClickListener()
+		{
+
+			public void onClick(DialogInterface dialog, int which)
+			{
+				loginToFacebook.setEnabled(false);
+				loginToTwitter.setEnabled(true);
+				facebookSkipped = true;
+			}
+		});
+
+		dialog = builder.create();// AlertDialog dialog; create like this
+									// outside onClick
+		dialog.show();
+	}
+
+	protected void openTwitterDialog()
+	{
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Twitter Login");
+
+		Drawable myIcon = getResources().getDrawable(R.drawable.ic_launcher);
+
+		BitmapDrawable bd = (BitmapDrawable) myIcon;
+		Bitmap bitmapResized = Bitmap.createScaledBitmap(bd.getBitmap(), 50,
+				50, false);
+		Drawable icon = new BitmapDrawable(getResources(), bitmapResized);
+
+		builder.setIcon(icon);
+
+		String message = "As part of the study you are required to log into Twitter."
+				+ "\nIf you do not have a Twitter, press 'Skip'";
+		builder.setMessage(message);
+		builder.setPositiveButton("Login",
+				new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						openTwitterSession();
+					}
+				});
+		builder.setNegativeButton("Skip", new DialogInterface.OnClickListener()
+		{
+
+			public void onClick(DialogInterface dialog, int which)
+			{
+				loginToFacebook.setEnabled(false);
+				loginToTwitter.setEnabled(false);
+				phoneField.setEnabled(true);
+				phoneLabel.setEnabled(true);
+				twitterSkipped = true;
+			}
+		});
+
+		dialog = builder.create();// AlertDialog dialog; create like this
+									// outside onClick
+		dialog.show();
 	}
 
 	protected void createHelpDialog()
@@ -211,10 +295,16 @@ public class MakeUser extends Activity
 
 	private void uploadData()
 	{
-		if (Session.getActiveSession() == null || oauthText.length() == 0
-				|| oauthSecretText.length() == 0
-				|| screenNameText.length() == 0
-				|| phoneField.getText().toString().length() == 0)
+		boolean facebookFinished = Session.getActiveSession() != null
+				|| facebookSkipped == true;
+		boolean twitterFinished = !(oauthText.length() == 0
+				|| oauthSecretText.length() == 0 || screenNameText.length() == 0)
+				|| twitterSkipped == true;
+		boolean phoneFinished = !(phoneField.getText() == null
+				|| phoneField.getText().toString().length() == 0
+				|| phoneField.getText().toString().length() < 10);
+
+		if (!facebookFinished || !twitterFinished || !phoneFinished)
 		{
 			Toast.makeText(this, "Complete logins please", Toast.LENGTH_LONG)
 					.show();
@@ -225,19 +315,27 @@ public class MakeUser extends Activity
 		try
 		{
 			obj.put("phone_number", phoneField.getText().toString());
-			obj.put("facebook_token", Session.getActiveSession()
-					.getAccessToken());
-			obj.put("facebook_appid", Session.getActiveSession()
-					.getApplicationId());
+			
+			String token = "";
+			String appId = "";
+			if (!facebookSkipped)
+			{
+				token = Session.getActiveSession().getAccessToken();
+				appId = Session.getActiveSession().getApplicationId();
+			}
+			
+			obj.put("facebook_token", token);
+			obj.put("facebook_appid", appId);
+			
 			obj.put("twitter_token", this.oauthText);
 			obj.put("twitter_secret", this.oauthSecretText);
 			obj.put("twitter_screen_name", this.screenNameText);
 			obj.put("twitter_id", twitterID);
 			System.out.println(obj.toString(1));
 
-			AsyncTask<JSONObject, Void, JSONObject> postData = new AsyncTask<JSONObject, Void, JSONObject>()
+			AsyncTask<JSONObject, Void, String> postData = new AsyncTask<JSONObject, Void, String>()
 			{
-				protected JSONObject doInBackground(JSONObject... params)
+				protected String doInBackground(JSONObject... params)
 				{
 					HttpPost post = new HttpPost(SERVER_URL);
 					post.setEntity(new ByteArrayEntity(params[0].toString()
@@ -247,7 +345,16 @@ public class MakeUser extends Activity
 					try
 					{
 						resp = httpclient.execute(post);
-						return readJson(resp);
+						String result = null;
+						try {
+							result = EntityUtils.toString(resp.getEntity());
+							
+						} catch (ParseException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						return result;
 					}
 					catch (ClientProtocolException e)
 					{
@@ -257,27 +364,37 @@ public class MakeUser extends Activity
 					{
 						e.printStackTrace();
 					}
-					catch (JSONException e)
-					{
-						e.printStackTrace();
-					}
 					return null;
 				}
 
+				protected void onPostExecute(String result)
+				{
+					System.out.println(result);
+					if (result.equals(PASS_RESULT))
+					{
+						Toast.makeText(MakeUser.this, "Thank you!", Toast.LENGTH_LONG).show();
+	
+						/*
+						 * Author max starts Alarm, saves phone number, and sets a default date
+						 * to get all messages
+						 */
+						savePhoneNumber();
+						AlarmReceiver alarm = new AlarmReceiver();
+						alarm.setAlarm(getApplicationContext());
+						
+					}
+					else
+					{
+						Toast.makeText(MakeUser.this, "Failed upload", Toast.LENGTH_LONG).show();
+					}
+				}
+
 			};
-			JSONObject resp = postData.execute(obj).get();
-			System.out.println(resp);
-			Toast.makeText(this, "Thank you!", Toast.LENGTH_LONG).show();
+
+			postData.execute(obj);
+			finish();
 		}
 		catch (JSONException e)
-		{
-			e.printStackTrace();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-		catch (ExecutionException e)
 		{
 			e.printStackTrace();
 		}
