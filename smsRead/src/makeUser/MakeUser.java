@@ -61,7 +61,7 @@ import edu.uiowa.datacollection.sms.R;
 public class MakeUser extends Activity
 {
 
-	private static final String SERVER_URL = "http://172.23.6.179:8001/DataCollection/makeuser/";
+	private static final String SERVER_URL = "http://128.255.45.52:7777/DataCollection/makeuser/";
 	public static final String PASS_RESULT = "PASS";
 	public static final String FAIL_RESULT = "FAIL";
 

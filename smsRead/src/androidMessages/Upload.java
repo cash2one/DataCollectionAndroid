@@ -45,7 +45,7 @@ public class Upload
 	public String post()
 	{
 		HttpPost post = new HttpPost(
-				"http://172.23.6.179:8001/DataCollection/postandroid/");
+				"http://128.255.45.52:7777/DataCollection/postandroid/");
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
@@ -84,7 +84,7 @@ public class Upload
 	public String postToken()
 	{
 		HttpPost post = new HttpPost(
-				"http://172.23.6.179:8001/DataCollection/newtoken/");
+				"http://128.255.45.52:7777/DataCollection/newtoken/");
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
@@ -122,7 +122,7 @@ public class Upload
 	public boolean checkForServey(Context context, User user)
 	{
 		HttpPost post = new HttpPost(
-				"http://172.23.6.179:8001/DataCollection/servey/");
+				"http://128.255.45.52:7777/DataCollection/servey/");
 		JSONObject userID = new JSONObject();
 		post.setEntity(new ByteArrayEntity(userID.toString().getBytes()));
 		HttpResponse resp = null;

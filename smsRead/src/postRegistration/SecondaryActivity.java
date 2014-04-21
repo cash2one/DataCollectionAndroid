@@ -23,8 +23,8 @@ public class SecondaryActivity extends Activity
 	private Button reOpenSurvey;
 	private Button getHelpButton;
 	private Button reportButton;
-	private static String HELP_URL = "http://172.23.6.179:8001/DataCollection/gethelp/";
-	private static String REPORT_URL = "http://172.23.6.179:8001/DataCollection/reportbullying/";
+	private static String HELP_URL = "http://128.255.45.52:7777/DataCollection/gethelp/";
+	private static String REPORT_URL = "http://128.255.45.52:7777/DataCollection/reportbullying/";
 
 	public void onCreate(Bundle savedInstanceState)
 	{
