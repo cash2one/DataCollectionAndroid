@@ -1,6 +1,7 @@
 package makeUser;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -45,9 +46,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;
 import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 import edu.uiowa.datacollection.sms.R;
 
@@ -145,7 +149,15 @@ public class MakeUser extends Activity
 		{
 			public void onClick(View arg0)
 			{
-				createHelpDialog();
+				String message = "Registration steps:"
+						+ "\n\t1) Press the Facebook button and login."
+						+ "\n\t2) Press the Twitter button and login."
+						+ "\n\t3) Enter your phone number."
+						+ "\n\t4) Press submit."
+						+ "\nQuestions or comments? Contact support@uiowa.cyberbullying.edu";
+				String title = "Registration help";
+				boolean closeOnExit = false;
+				createInfoDialogWithExitButton(message, title, closeOnExit);
 			}
 		});
 
@@ -188,6 +200,7 @@ public class MakeUser extends Activity
 			public void onClick(DialogInterface dialog, int which)
 			{
 				loginToFacebook.setEnabled(false);
+				loginToFacebook.setText("Skipped Facebook login");
 				loginToTwitter.setEnabled(true);
 				facebookSkipped = true;
 			}
@@ -237,6 +250,7 @@ public class MakeUser extends Activity
 				phoneField.setEnabled(true);
 				phoneLabel.setEnabled(true);
 				twitterSkipped = true;
+				loginToTwitter.setText("Skipped Twitter login");
 			}
 		});
 
@@ -247,12 +261,14 @@ public class MakeUser extends Activity
 
 	/**
 	 * Creates the Help dialog
+	 * @param closeOnExit 
 	 */
-	protected void createHelpDialog()
+	protected void createInfoDialogWithExitButton(String text, String title,
+			final boolean closeOnExit)
 	{
 		AlertDialog dialog;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Registration help");
+		builder.setTitle(title);
 
 		Drawable myIcon = getResources().getDrawable(R.drawable.ic_launcher);
 
@@ -263,17 +279,13 @@ public class MakeUser extends Activity
 
 		builder.setIcon(icon);
 
-		String message = "Registration steps:"
-				+ "\n\t1) Press the Facebook button and login."
-				+ "\n\t2) Press the Twitter button and login."
-				+ "\n\t3) Enter your phone number."
-				+ "\n\t4) Press submit."
-				+ "\nQuestions or comments? Contact support@uiowa.cyberbullying.edu";
-		builder.setMessage(message);
+		builder.setMessage(text);
 		builder.setPositiveButton("Exit", new DialogInterface.OnClickListener()
 		{
 			public void onClick(DialogInterface dialog, int which)
 			{
+				if (closeOnExit)
+					finish();
 			}
 		});
 		dialog = builder.create();// AlertDialog dialog; create like this
@@ -385,7 +397,15 @@ public class MakeUser extends Activity
 					}
 					catch (IOException e)
 					{
-						e.printStackTrace();
+						//The connection to the server was refused
+						if (e instanceof ConnectException)
+						{
+							return FAIL_RESULT;
+						}
+						else
+						{
+							e.printStackTrace();
+						}
 					}
 					catch (ParseException e)
 					{
@@ -415,11 +435,34 @@ public class MakeUser extends Activity
 						AlarmReceiver alarm = new AlarmReceiver();
 						alarm.setAlarm(getApplicationContext());
 
+						// Exit the activity
+						finish();
+
+					}
+					else if (result.equals(FAIL_RESULT))
+					{
+						String message = "Sorry, it seems like our server"
+								+ " is experiencing some difficulties or "
+								+ "you aren't connected to the internet.\n"
+								+ "If your internet connection isn't working "
+								+ "try again when you have an internet "
+								+ "connection.\n"
+								+ "If your internet is working, please wait "
+								+ "24 hours to allow server maintenance.\n"
+								+ "Thank you for your patience.";
+						String title = "Registration error";
+						boolean closeOnExit = true;
+						createInfoDialogWithExitButton(message, title, closeOnExit);
 					}
 					else
 					{
-						Toast.makeText(MakeUser.this, "Failed upload",
-								Toast.LENGTH_LONG).show();
+						String message = "An unknown error has occured with"
+								+ " your registration. Please try again in "
+								+ "24 hours. "
+								+ "Thank you for your patience.";
+						String title = "Registration error";
+						boolean closeOnExit = true;
+						createInfoDialogWithExitButton(message, title, closeOnExit);
 					}
 				}
 
@@ -427,9 +470,6 @@ public class MakeUser extends Activity
 
 			// Start the upload
 			postData.execute(obj);
-
-			// Exit the activity
-			finish();
 		}
 		catch (JSONException e)
 		{
@@ -483,6 +523,8 @@ public class MakeUser extends Activity
 									permissions));
 					loginToFacebook.setEnabled(false);
 					loginToTwitter.setEnabled(true);
+
+					updateFacebookButton();
 				}
 			}
 		});
@@ -612,8 +654,11 @@ public class MakeUser extends Activity
 
 				loginToFacebook.setEnabled(false);
 				loginToTwitter.setEnabled(false);
+				loginToTwitter.setText("Logged in as " + screenNameText);
 				phoneField.setEnabled(true);
 				phoneLabel.setEnabled(true);
+
+				updateFacebookButton();
 			}
 		}
 
@@ -637,6 +682,32 @@ public class MakeUser extends Activity
 			// true);
 			editor.commit();
 			return accessToken;
+		}
+	}
+
+	public void updateFacebookButton()
+	{
+		Log.i("here", "here");
+		if (Session.getActiveSession() == null)
+		{
+			loginToFacebook.setText("Skipped Facebook login");
+		}
+		else
+		{
+			Log.i("here", "here");
+			Request.newMeRequest(Session.getActiveSession(),
+					new Request.GraphUserCallback()
+					{
+						// callback after Graph API response with user
+						// object
+						@Override
+						public void onCompleted(GraphUser user,
+								Response response)
+						{
+							loginToFacebook.setText("Logged in as "
+									+ user.getName());
+						}
+					}).executeAsync();
 		}
 	}
 
