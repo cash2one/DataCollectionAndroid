@@ -489,6 +489,8 @@ public class MakeUser extends Activity
 	 */
 	private void openTwitterSession()
 	{
+		Toast.makeText(this, "Opening Twitter, this may take a second",
+				Toast.LENGTH_LONG).show();
 		new TwitterAuthenticateTask().execute();
 	}
 
