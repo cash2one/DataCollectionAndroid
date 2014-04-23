@@ -261,7 +261,8 @@ public class MakeUser extends Activity
 
 	/**
 	 * Creates the Help dialog
-	 * @param closeOnExit 
+	 * 
+	 * @param closeOnExit
 	 */
 	protected void createInfoDialogWithExitButton(String text, String title,
 			final boolean closeOnExit)
@@ -397,7 +398,7 @@ public class MakeUser extends Activity
 					}
 					catch (IOException e)
 					{
-						//The connection to the server was refused
+						// The connection to the server was refused
 						if (e instanceof ConnectException)
 						{
 							return FAIL_RESULT;
@@ -452,17 +453,18 @@ public class MakeUser extends Activity
 								+ "Thank you for your patience.";
 						String title = "Registration error";
 						boolean closeOnExit = true;
-						createInfoDialogWithExitButton(message, title, closeOnExit);
+						createInfoDialogWithExitButton(message, title,
+								closeOnExit);
 					}
 					else
 					{
 						String message = "An unknown error has occured with"
 								+ " your registration. Please try again in "
-								+ "24 hours. "
-								+ "Thank you for your patience.";
+								+ "24 hours. " + "Thank you for your patience.";
 						String title = "Registration error";
 						boolean closeOnExit = true;
-						createInfoDialogWithExitButton(message, title, closeOnExit);
+						createInfoDialogWithExitButton(message, title,
+								closeOnExit);
 					}
 				}
 
@@ -560,7 +562,7 @@ public class MakeUser extends Activity
 				Log.i("ERROR:", "Couldn't make md");
 			}
 			md.update(signature.toByteArray());
-			Log.i("KeyHash:",
+			Log.i("KeyHash for Facebook:",
 					Base64.encodeToString(md.digest(), Base64.DEFAULT));
 		}
 	}
