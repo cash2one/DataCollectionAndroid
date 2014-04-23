@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import main.MainActivity;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -64,8 +66,6 @@ import edu.uiowa.datacollection.sms.R;
  */
 public class MakeUser extends Activity
 {
-
-	private static final String SERVER_URL = "http://128.255.45.52:7777/DataCollection/makeuser/";
 	public static final String PASS_RESULT = "PASS";
 	public static final String FAIL_RESULT = "FAIL";
 
@@ -149,15 +149,7 @@ public class MakeUser extends Activity
 		{
 			public void onClick(View arg0)
 			{
-				String message = "Registration steps:"
-						+ "\n\t1) Press the Facebook button and login."
-						+ "\n\t2) Press the Twitter button and login."
-						+ "\n\t3) Enter your phone number."
-						+ "\n\t4) Press submit."
-						+ "\nQuestions or comments? Contact support@uiowa.cyberbullying.edu";
-				String title = "Registration help";
-				boolean closeOnExit = false;
-				createInfoDialogWithExitButton(message, title, closeOnExit);
+				createHelpDialog();
 			}
 		});
 
@@ -259,9 +251,150 @@ public class MakeUser extends Activity
 		dialog.show();
 	}
 
+	protected void createHelpDialog()
+	{
+		final String helpMessage = "Registration steps:"
+				+ "\n\t1) Press the Facebook button and login."
+				+ "\n\t2) Press the Twitter button and login."
+				+ "\n\t3) Enter your phone number."
+				+ "\n\t4) Press submit."
+				+ "\nQuestions or comments? Contact support@uiowa.cyberbullying.edu";
+		final String helpTitle = "Registration help";
+
+		final String privacyStatement = "All data will be stored on a secure "
+				+ "University of Iowa server. No unauthorized users will have access "
+				+ "to the data and it will be anonymized. No details of your or "
+				+ "your friends will ever be shared.";
+		final String privacyTitle = "Privacy Statement";
+
+		final String errorStatement = "Found a bug? Have suggestions for us? "
+				+ "Want more information about this study?\n"
+				+ "Contact us at support@uiowa.cyberbullying.edu";
+		final String errorTitle = "Report an Error";
+
+		final String withdrawStatement = "Want to withdraw from the study? Email "
+				+ "us at support@uiowa.cyberbullying.edu";
+		final String withdrawTitle = "Withdraw from Study";
+
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Help");
+
+		Drawable myIcon = getResources().getDrawable(R.drawable.ic_launcher);
+
+		BitmapDrawable bd = (BitmapDrawable) myIcon;
+		Bitmap bitmapResized = Bitmap.createScaledBitmap(bd.getBitmap(), 50,
+				50, false);
+		Drawable icon = new BitmapDrawable(getResources(), bitmapResized);
+
+		builder.setIcon(icon);
+
+		String[] options = new String[] { "Registration Help",
+				"Privacy Statement", "Report an Error", "Withdraw from study" };
+		builder.setItems(options, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+				if (which == 0)
+				{
+					createInfoDialogWithExitButtonAndCustomAction(helpMessage,
+							helpTitle, false, "Email us",
+							new DialogInterface.OnClickListener()
+							{
+								public void onClick(DialogInterface dialog,
+										int which)
+								{
+									String recepientEmail = "support@uiowa.cyberbullying.edu";
+									Intent intent = new Intent(
+											Intent.ACTION_SENDTO);
+									intent.setData(Uri.parse("mailto:"
+											+ recepientEmail));
+									startActivity(intent);
+								}
+							});
+				}
+				else if (which == 1)
+				{
+					createInfoDialogWithExitButton(privacyStatement,
+							privacyTitle, false);
+				}
+				else if (which == 2)
+				{
+					createInfoDialogWithExitButtonAndCustomAction(
+							errorStatement, errorTitle, false, "Email us",
+							new DialogInterface.OnClickListener()
+							{
+								public void onClick(DialogInterface dialog,
+										int which)
+								{
+									String recepientEmail = "support@uiowa.cyberbullying.edu";
+									Intent intent = new Intent(
+											Intent.ACTION_SENDTO);
+									intent.setData(Uri.parse("mailto:"
+											+ recepientEmail));
+									startActivity(intent);
+								}
+							});
+				}
+				else if (which == 3)
+				{
+					createInfoDialogWithExitButtonAndCustomAction(
+							withdrawStatement, withdrawTitle, false,
+							"Email us", new DialogInterface.OnClickListener()
+							{
+								public void onClick(DialogInterface dialog,
+										int which)
+								{
+									String recepientEmail = "support@uiowa.cyberbullying.edu";
+									Intent intent = new Intent(
+											Intent.ACTION_SENDTO);
+									intent.setData(Uri.parse("mailto:"
+											+ recepientEmail));
+									startActivity(intent);
+								}
+							});
+				}
+			}
+		});
+
+		dialog = builder.create();// AlertDialog dialog; create like this
+									// outside onClick
+		dialog.show();
+	}
+
+	protected void createInfoDialogWithExitButtonAndCustomAction(String text,
+			String title, final boolean closeOnExit, String actionButtonText,
+			DialogInterface.OnClickListener onClickListener)
+	{
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(title);
+
+		Drawable myIcon = getResources().getDrawable(R.drawable.ic_launcher);
+
+		BitmapDrawable bd = (BitmapDrawable) myIcon;
+		Bitmap bitmapResized = Bitmap.createScaledBitmap(bd.getBitmap(), 50,
+				50, false);
+		Drawable icon = new BitmapDrawable(getResources(), bitmapResized);
+
+		builder.setIcon(icon);
+
+		builder.setMessage(text);
+		builder.setPositiveButton(actionButtonText, onClickListener);
+		builder.setNegativeButton("Exit", new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+				if (closeOnExit)
+					finish();
+			}
+		});
+		dialog = builder.create();// AlertDialog dialog; create like this
+									// outside onClick
+		dialog.show();
+	}
+
 	/**
-	 * Creates the Help dialog
-	 * 
 	 * @param closeOnExit
 	 */
 	protected void createInfoDialogWithExitButton(String text, String title,
@@ -281,7 +414,7 @@ public class MakeUser extends Activity
 		builder.setIcon(icon);
 
 		builder.setMessage(text);
-		builder.setPositiveButton("Exit", new DialogInterface.OnClickListener()
+		builder.setNegativeButton("Exit", new DialogInterface.OnClickListener()
 		{
 			public void onClick(DialogInterface dialog, int which)
 			{
@@ -380,7 +513,7 @@ public class MakeUser extends Activity
 			{
 				protected String doInBackground(JSONObject... params)
 				{
-					HttpPost post = new HttpPost(SERVER_URL);
+					HttpPost post = new HttpPost(MainActivity.CREATE_USER_URL);
 					post.setEntity(new ByteArrayEntity(params[0].toString()
 							.getBytes()));
 					HttpResponse resp = null;

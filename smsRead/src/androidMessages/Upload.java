@@ -1,6 +1,9 @@
 package androidMessages;
 
 import java.io.IOException;
+import java.net.ConnectException;
+
+import main.MainActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
@@ -44,8 +47,7 @@ public class Upload
 
 	public String post()
 	{
-		HttpPost post = new HttpPost(
-				"http://128.255.45.52:7777/DataCollection/postandroid/");
+		HttpPost post = new HttpPost(MainActivity.ANDROID_UPLOAD_URL);
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
@@ -83,8 +85,7 @@ public class Upload
 
 	public String postToken()
 	{
-		HttpPost post = new HttpPost(
-				"http://128.255.45.52:7777/DataCollection/newtoken/");
+		HttpPost post = new HttpPost(MainActivity.POST_TOKEN_URL);
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
@@ -98,6 +99,11 @@ public class Upload
 		}
 		catch (IOException e)
 		{
+			if (e instanceof ConnectException)
+			{
+				Log.i("ERROR", "Unable to connect to server");
+				return null;
+			}
 			e.printStackTrace();
 		}
 		String result = null;
@@ -121,16 +127,15 @@ public class Upload
 
 	public boolean checkForServey(Context context, User user)
 	{
-		HttpPost post = new HttpPost(
-				"http://128.255.45.52:7777/DataCollection/servey/");
+		HttpPost post = new HttpPost(MainActivity.SURVEY_URL);
 		JSONObject userID = new JSONObject();
-		post.setEntity(new ByteArrayEntity(userID.toString().getBytes()));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
 		String result = null;
 		try
 		{
 			userID.put("user", user.getUser());
+			post.setEntity(new ByteArrayEntity(userID.toString().getBytes()));
 			resp = httpclient.execute(post);
 			result = EntityUtils.toString(resp.getEntity());
 		}
@@ -150,6 +155,11 @@ public class Upload
 		}
 		catch (IOException e)
 		{
+			if (e instanceof ConnectException)
+			{
+				Log.i("ERROR", "Unable to connect to server");
+				return false;
+			}
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

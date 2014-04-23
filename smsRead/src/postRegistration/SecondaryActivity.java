@@ -2,6 +2,7 @@ package postRegistration;
 
 import java.util.concurrent.ExecutionException;
 
+import main.MainActivity;
 import makeUser.MakeUser;
 import android.app.Activity;
 import android.content.Context;
@@ -23,8 +24,6 @@ public class SecondaryActivity extends Activity
 	private Button reOpenSurvey;
 	private Button getHelpButton;
 	private Button reportButton;
-	private static String HELP_URL = "http://128.255.45.52:7777/DataCollection/gethelp/";
-	private static String REPORT_URL = "http://128.255.45.52:7777/DataCollection/reportbullying/";
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -77,7 +76,7 @@ public class SecondaryActivity extends Activity
 
 	protected void getHelp()
 	{
-		Uri uri = Uri.parse(HELP_URL);
+		Uri uri = Uri.parse(MainActivity.GET_HELP_URL);
 		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		this.startActivity(intent);
@@ -85,7 +84,7 @@ public class SecondaryActivity extends Activity
 
 	protected void report()
 	{
-		Uri uri = Uri.parse(REPORT_URL);
+		Uri uri = Uri.parse(MainActivity.REPORT_BULLYING_URL);
 		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		this.startActivity(intent);
