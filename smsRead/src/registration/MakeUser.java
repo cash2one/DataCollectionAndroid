@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import utilities.DialogUtilities;
+import utilities.InterfaceUtilities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -132,7 +132,7 @@ public class MakeUser extends Activity
 		{
 			public void onClick(View arg0)
 			{
-				DialogUtilities.createHelpDialog(MakeUser.this);
+				InterfaceUtilities.createHelpDialog(MakeUser.this);
 			}
 		});
 
@@ -150,7 +150,7 @@ public class MakeUser extends Activity
 		String message = "As part of the study you are required to log into Twitter."
 				+ "\nIf you do not have a Twitter, press 'Skip'";
 
-		DialogUtilities.createLoginDialog(MakeUser.this, "Login",
+		InterfaceUtilities.createLoginDialog(MakeUser.this, "Login",
 				new DialogInterface.OnClickListener()
 				{
 					public void onClick(DialogInterface dialog, int which)
@@ -179,7 +179,7 @@ public class MakeUser extends Activity
 	{
 		String message = "As part of the study you are required to log into Facebook."
 				+ "\nIf you do not have a Facebook, press 'Skip'";
-		DialogUtilities.createLoginDialog(MakeUser.this, "Login",
+		InterfaceUtilities.createLoginDialog(MakeUser.this, "Login",
 				new DialogInterface.OnClickListener()
 				{
 					public void onClick(DialogInterface dialog, int which)

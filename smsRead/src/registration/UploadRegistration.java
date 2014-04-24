@@ -16,7 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import utilities.DialogUtilities;
+import utilities.InterfaceUtilities;
 import alarmreceiver.AlarmReceiver;
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -116,14 +116,14 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 		else if (result.equals(FAIL_RESULT))
 		{
 			boolean closeOnExit = true;
-			DialogUtilities.createInfoDialogWithExitButton(FAIL_MESSAGE,
+			InterfaceUtilities.createInfoDialogWithExitButton(FAIL_MESSAGE,
 					FAIL_TITLE, closeOnExit, context);
 		}
 		else
 		{
 
 			boolean closeOnExit = true;
-			DialogUtilities.createInfoDialogWithExitButton(ERROR_MESSAGE,
+			InterfaceUtilities.createInfoDialogWithExitButton(ERROR_MESSAGE,
 					ERROR_TITLE, closeOnExit, context);
 		}
 	}

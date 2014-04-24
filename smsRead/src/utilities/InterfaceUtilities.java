@@ -1,16 +1,22 @@
 package utilities;
 
+import post_registration.SecondaryActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import edu.uiowa.datacollection.sms.R;
 
-public class DialogUtilities
+public class InterfaceUtilities
 {
 	public static final String helpMessage = "Registration steps:"
 			+ "\n\t1) Press the Facebook button and login."
@@ -202,7 +208,8 @@ public class DialogUtilities
 	 */
 	public static void createLoginDialog(Activity context, String loginText,
 			DialogInterface.OnClickListener loginAction, String skipText,
-			DialogInterface.OnClickListener skipAction, String message, String title)
+			DialogInterface.OnClickListener skipAction, String message,
+			String title)
 	{
 		AlertDialog dialog;
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -228,4 +235,31 @@ public class DialogUtilities
 		dialog.show();
 	}
 
+	public static void createNotification(Context context)
+	{
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				context).setSmallIcon(R.drawable.notif_icon)
+				.setContentTitle("Survey")
+				.setContentText("Please complete the survey");
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(context, SecondaryActivity.class);
+
+		// The stack builder object will contain an artificial back stack for
+		// the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(SecondaryActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(0, mBuilder.build());
+	}
 }

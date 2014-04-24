@@ -1,22 +1,15 @@
 package post_registration;
 
-import java.util.concurrent.ExecutionException;
-
-import registration.MakeUser;
-import sms_messages.Upload;
-import sms_messages.User;
-import utilities.DialogUtilities;
 import main.MainActivity;
+import registration.MakeUser;
+import utilities.InterfaceUtilities;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 import edu.uiowa.datacollection.sms.R;
 
 public class SecondaryActivity extends Activity
@@ -82,7 +75,7 @@ public class SecondaryActivity extends Activity
 			@Override
 			public void onClick(View arg0)
 			{
-				DialogUtilities.createHelpDialog(SecondaryActivity.this);
+				InterfaceUtilities.createHelpDialog(SecondaryActivity.this);
 			}
 		});
 	}
@@ -105,39 +98,7 @@ public class SecondaryActivity extends Activity
 
 	protected void launchSurvey()
 	{
-		final User theUser = new User(this);
-		final Upload upload = new Upload();
-		final Context context = this;
-		AsyncTask<Void, Void, Boolean> notOnMainThread = new AsyncTask<Void, Void, Boolean>()
-		{
-			@Override
-			protected Boolean doInBackground(Void... params)
-			{
-				return upload.checkForServey(context, theUser);
-			}
-
-		};
-		try
-		{
-			if (!notOnMainThread.execute().get())
-			{
-				Toast.makeText(
-						context,
-						"Thanks for checking but you've finished all the surveys!",
-						Toast.LENGTH_LONG).show();
-			}
-		}
-		catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (ExecutionException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		new CheckForSurveys(this).execute();
 	}
 
 	protected void reRegister()
