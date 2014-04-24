@@ -1,15 +1,15 @@
-package postRegistration;
+package post_registration;
 
 import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import sms_messages.Upload;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidMessages.Upload;
 
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;

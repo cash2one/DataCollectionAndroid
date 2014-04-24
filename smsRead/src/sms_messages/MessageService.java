@@ -1,4 +1,4 @@
-package androidMessages;
+package sms_messages;
 
 import java.util.Date;
 import java.util.List;
@@ -7,11 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import postRegistration.SecondaryActivity;
-
 import edu.uiowa.datacollection.sms.R;
-import postRegistration.ReAuthenticate;
-
+import post_registration.ReAuthenticate;
+import post_registration.SecondaryActivity;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

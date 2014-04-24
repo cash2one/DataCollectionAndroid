@@ -1,4 +1,4 @@
-package androidMessages;
+package sms_messages;
 
 import java.util.ArrayList;
 import java.util.Collections;

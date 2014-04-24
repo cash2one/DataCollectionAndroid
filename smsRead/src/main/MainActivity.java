@@ -1,11 +1,20 @@
 package main;
 
-import makeUser.MakeUser;
-import postRegistration.SecondaryActivity;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import post_registration.SecondaryActivity;
+import registration.MakeUser;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 
 public class MainActivity extends Activity
 {
@@ -29,9 +38,14 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
+		// Call this method if there is an authentication problem, it is only
+		// needed the first time getting the app authenticated with facebook,
+		// and remains for debugging purposes.
+		getDebugKeyhash();
+
 		SharedPreferences sharedPref = this.getApplicationContext()
 				.getSharedPreferences("mypref", 0);
-		if (sharedPref.getString("phone_number", null) != null)
+		if ((sharedPref.getString("phone_number", null) != null))
 		{
 			// Is registered
 			Intent intent = new Intent(this, SecondaryActivity.class);
@@ -44,6 +58,41 @@ public class MainActivity extends Activity
 			Intent intent = new Intent(this, MakeUser.class);
 			startActivity(intent);
 			finish();
+		}
+	}
+
+	/**
+	 * This method fixes some app authentication errors when run for the first
+	 * time before the app is published.
+	 */
+	private void getDebugKeyhash()
+	{
+		PackageInfo info = null;
+		try
+		{
+			info = getPackageManager().getPackageInfo(
+					"edu.uiowa.datacollection.sms",
+					PackageManager.GET_SIGNATURES);
+		}
+		catch (NameNotFoundException e1)
+		{
+			Log.i("ERROR:", "Couldn't make info");
+		}
+
+		for (Signature signature : info.signatures)
+		{
+			MessageDigest md = null;
+			try
+			{
+				md = MessageDigest.getInstance("SHA");
+			}
+			catch (NoSuchAlgorithmException e)
+			{
+				Log.i("ERROR:", "Couldn't make md");
+			}
+			md.update(signature.toByteArray());
+			Log.i("KeyHash for Facebook:",
+					Base64.encodeToString(md.digest(), Base64.DEFAULT));
 		}
 	}
 }

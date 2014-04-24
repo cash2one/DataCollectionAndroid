@@ -1,4 +1,4 @@
-package androidMessages;
+package sms_messages;
 
 import java.io.IOException;
 import java.net.ConnectException;

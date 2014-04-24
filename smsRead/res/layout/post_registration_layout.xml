@@ -32,13 +32,19 @@
             android:id="@+id/getHelpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Get Help" />
+            android:text="Bullying Resources and Help" />
 
         <Button
             android:id="@+id/reportBullyingButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Report Bullying" />
+
+        <Button
+            android:id="@+id/helpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="App Help" />
 
     </LinearLayout>
 

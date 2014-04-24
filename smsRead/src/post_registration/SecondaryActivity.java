@@ -1,9 +1,12 @@
-package postRegistration;
+package post_registration;
 
 import java.util.concurrent.ExecutionException;
 
+import registration.MakeUser;
+import sms_messages.Upload;
+import sms_messages.User;
+import utilities.DialogUtilities;
 import main.MainActivity;
-import makeUser.MakeUser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import androidMessages.Upload;
-import androidMessages.User;
 import edu.uiowa.datacollection.sms.R;
 
 public class SecondaryActivity extends Activity
@@ -24,6 +25,7 @@ public class SecondaryActivity extends Activity
 	private Button reOpenSurvey;
 	private Button getHelpButton;
 	private Button reportButton;
+	private Button helpButton;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -70,6 +72,17 @@ public class SecondaryActivity extends Activity
 			public void onClick(View v)
 			{
 				report();
+			}
+		});
+		
+		helpButton = (Button) findViewById(R.id.helpButton);
+		helpButton.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View arg0)
+			{
+				DialogUtilities.createHelpDialog(SecondaryActivity.this);
 			}
 		});
 	}
