@@ -215,3 +215,4 @@ pip-log.txt
 .mr.developer.cfg
 *.class
 *.class
+smsRead/gen/edu/uiowa/datacollection/sms/R.java

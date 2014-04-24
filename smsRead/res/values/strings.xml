@@ -4,6 +4,16 @@
     <string name="app_name">UIowa Data Collection</string>
     <string name="action_settings">Settings</string>
     <string name="app_id">442864129167674</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="registration_text">University of Iowa\nCyberbullying Research\nRegistration</string>
+    <string name="facebook_login_button_text">Login to Facebook</string>
+    <string name="twitter_login_button_text">Login to Twitter</string>
+    <string name="phone_label_text">Phone Number</string>
+    <string name="help_button_text">Help</string>
+    <string name="submit_button_text">Submit</string>
+    <string name="reregister_button_text">Re-register</string>
+    <string name="launch_survey_button_text">Launch Survey</string>
+    <string name="get_help_button_text">Bullying Resources and Help</string>
+    <string name="report_bullying_button_text">Report Bullying</string>
+    <string name="app_help_button_text">App Help</string>
+    <string name="post_registration_text">University of Iowa\nCyberbullying Research</string>
 </resources>

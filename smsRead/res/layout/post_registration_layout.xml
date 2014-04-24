@@ -20,31 +20,31 @@
             android:id="@+id/reregisterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Re-register" />
+            android:text="@string/reregister_button_text" />
 
         <Button
             android:id="@+id/launchSurveyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Launch Survey" />
+            android:text="@string/launch_survey_button_text" />
 
         <Button
             android:id="@+id/getHelpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bullying Resources and Help" />
+            android:text="@string/get_help_button_text" />
 
         <Button
             android:id="@+id/reportBullyingButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Report Bullying" />
+            android:text="@string/report_bullying_button_text" />
 
         <Button
             android:id="@+id/helpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="App Help" />
+            android:text="@string/app_help_button_text" />
 
     </LinearLayout>
 
@@ -57,7 +57,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="14dp"
         android:gravity="center"
-        android:text="University of Iowa\nCyberbullying Research\nRegistration"
+        android:text="@string/post_registration_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

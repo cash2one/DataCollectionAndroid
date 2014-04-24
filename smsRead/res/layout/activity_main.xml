@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:text="University of Iowa\nCyberbullying Research\nRegistration"
+        android:text="@string/registration_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
@@ -30,14 +30,14 @@
             android:id="@+id/loginToFacebookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login to Facebook" />
+            android:text="@string/facebook_login_button_text" />
 
         <Button
             android:id="@+id/loginToTwitterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Login to Twitter" />
+            android:text="@string/twitter_login_button_text" />
 
         <TextView
             android:id="@+id/phoneLabel"
@@ -46,7 +46,7 @@
             android:enabled="false"
             android:paddingBottom="10dp"
             android:paddingTop="15dp"
-            android:text="Phone Number"
+            android:text="@string/phone_label_text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_weight="1"
-                android:text="Help" />
+                android:text="@string/help_button_text" />
 
             <Button
                 android:id="@+id/doneButton"
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="right"
-                android:text="Submit" />
+                android:text="@string/submit_button_text" />
 
         </LinearLayout>
 
