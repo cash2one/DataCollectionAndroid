@@ -261,7 +261,7 @@ public class MakeUser extends Activity
 			System.out.println(obj.toString(1));
 
 			UploadRegistration postData = new UploadRegistration(this,
-					phoneField.getText().toString());
+					phoneField.getText().toString(), facebookSkipped);
 
 			// Start the upload
 			postData.execute(obj);

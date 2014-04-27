@@ -57,7 +57,8 @@ public class Upload
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.i("ERROR", "Could not connect to server");
+			return null;
 		}
 		String result = null;
 		try

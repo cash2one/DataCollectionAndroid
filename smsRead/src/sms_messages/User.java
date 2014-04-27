@@ -14,6 +14,7 @@ public class User
 	private Date date;
 	private Date tokenAge;
 	private Context context;
+	private long tokenAgeLong;
 
 	public User(Context context)
 	{
@@ -25,11 +26,17 @@ public class User
 		this.date = new Date(temp);
 		temp = sharedPref.getLong("tokenAge", 0);
 		this.tokenAge = new Date(temp);
+		this.tokenAgeLong = temp;
 	}
 
 	public Date getTokenAge()
 	{
 		return tokenAge;
+	}
+
+	public long getTokenAgeLong()
+	{
+		return tokenAgeLong;
 	}
 
 	public void setTokenAge(Date tokenAge)

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 import edu.uiowa.datacollection.sms.R;
 
 public class SecondaryActivity extends Activity
@@ -67,11 +68,11 @@ public class SecondaryActivity extends Activity
 				report();
 			}
 		});
-		
+
 		helpButton = (Button) findViewById(R.id.helpButton);
 		helpButton.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View arg0)
 			{
@@ -99,6 +100,7 @@ public class SecondaryActivity extends Activity
 	protected void launchSurvey()
 	{
 		new CheckForSurveys(this).execute();
+		Toast.makeText(this, "Checking for surveys", Toast.LENGTH_SHORT).show();
 	}
 
 	protected void reRegister()

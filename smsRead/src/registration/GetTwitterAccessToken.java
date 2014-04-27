@@ -3,7 +3,6 @@ package registration;
 import twitter4j.auth.AccessToken;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 
 /**
  * Internal class used for accessing the access token after we have finished
@@ -30,8 +29,11 @@ public class GetTwitterAccessToken extends
 			makeUser.setScreenNameText("");
 			makeUser.setTwitterID("");
 
-			Log.i("ERROR:", "Could not get Twitter data. Trying again.");
-			makeUser.openTwitterSession();
+
+			makeUser.getLoginToFacebook().setEnabled(false);
+			makeUser.getLoginToTwitter().setEnabled(true);
+
+			makeUser.updateFacebookButton();
 		}
 		else
 		{

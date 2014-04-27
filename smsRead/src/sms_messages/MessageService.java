@@ -1,5 +1,7 @@
 package sms_messages;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import post_registration.ReAuthenticate;
+import registration.UploadRegistration;
 import utilities.InterfaceUtilities;
 import utilities.ServerUtilities;
 import android.app.IntentService;
@@ -58,7 +61,7 @@ public class MessageService extends IntentService
 
 		Upload upload = new Upload(uploadData);
 		String post = upload.post();// json to server
-		if (post.equals("worked"))
+		if (post != null && post.equals("worked"))
 		{
 			Date date = new Date();
 			theUser.setDate(date);
@@ -68,10 +71,30 @@ public class MessageService extends IntentService
 			InterfaceUtilities.createNotification(this);
 		}
 
-		Intent newFaceBookToken = new Intent(this, ReAuthenticate.class);
-		newFaceBookToken.putExtra("phone_number", theUser.getUser());
-		newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(newFaceBookToken);
+		// Check to see if we have internet before asking for Facebook data
+		try
+		{
+			InetAddress.getByName("api.facebook.com");
+		}
+		catch (UnknownHostException e)
+		{
+			// No internet
+			Log.i("ERROR", "Could not access Facebook, must not have internet");
+			return;
+		}
+		
+		if (theUser.getTokenAgeLong() != UploadRegistration.SKIPPED_FACEBOOK)
+		{
+			System.out.println("Starting facebook reauth");
+			Intent newFaceBookToken = new Intent(this, ReAuthenticate.class);
+			newFaceBookToken.putExtra("phone_number", theUser.getUser());
+			newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(newFaceBookToken);
+		}
+		else
+		{
+			System.out.println("Not starting Facebook reauth");
+		}
 	}
-	
+
 }

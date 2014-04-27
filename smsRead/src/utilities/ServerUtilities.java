@@ -1,7 +1,6 @@
 package utilities;
 
 import java.io.IOException;
-import java.net.ConnectException;
 
 import main.MainActivity;
 
@@ -12,6 +11,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,20 @@ public class ServerUtilities
 		HttpPost post = new HttpPost(MainActivity.SURVEY_URL);
 		JSONObject userID = new JSONObject();
 		HttpResponse resp = null;
-		HttpClient httpclient = new DefaultHttpClient();
+		
+
+		
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		// The default value is zero, that means the timeout is not used. 
+		int timeoutConnection = 3000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		// Set the default socket timeout (SO_TIMEOUT) 
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 5000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		
+		HttpClient httpclient = new DefaultHttpClient(httpParameters);
 		String result = null;
 		try
 		{
@@ -54,15 +69,10 @@ public class ServerUtilities
 		}
 		catch (IOException e)
 		{
-			if (e instanceof ConnectException)
-			{
-				Log.i("ERROR", "Unable to connect to server");
-				return false;
-			}
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.i("ERROR", "Unable to connect to server");
+			return false;
 		}
-		Log.i("result", result);
+		Log.i("Is there a survey?", result);
 		if (!(result.equals("null")))
 		{
 			Uri uri = Uri.parse(result);

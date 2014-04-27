@@ -1,7 +1,6 @@
 package registration;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.Date;
 
 import main.MainActivity;
@@ -9,10 +8,12 @@ import main.MainActivity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 {
 	public static final String PASS_RESULT = "PASS";
 	public static final String FAIL_RESULT = "FAIL";
+	public static final long SKIPPED_FACEBOOK = -1;
 
 	public static final String FAIL_MESSAGE = "Sorry, it seems like our server"
 			+ " is experiencing some difficulties or "
@@ -46,11 +48,14 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 
 	private Activity context;
 	private String phoneNumber;
+	private boolean skippedFacebook;
 
-	public UploadRegistration(Activity context, String phoneNumber)
+	public UploadRegistration(Activity context, String phoneNumber,
+			boolean skippedFacebook)
 	{
 		this.context = context;
 		this.phoneNumber = phoneNumber;
+		this.skippedFacebook = skippedFacebook;
 	}
 
 	protected String doInBackground(JSONObject... params)
@@ -58,7 +63,20 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 		HttpPost post = new HttpPost(MainActivity.CREATE_USER_URL);
 		post.setEntity(new ByteArrayEntity(params[0].toString().getBytes()));
 		HttpResponse resp = null;
-		HttpClient httpclient = new DefaultHttpClient();
+		
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		// The default value is zero, that means the timeout is not used. 
+		int timeoutConnection = 3000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		// Set the default socket timeout (SO_TIMEOUT) 
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 5000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+		DefaultHttpClient httpclient = new DefaultHttpClient(httpParameters);
+		
+		
 		try
 		{
 			resp = httpclient.execute(post);
@@ -73,14 +91,7 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 		catch (IOException e)
 		{
 			// The connection to the server was refused
-			if (e instanceof ConnectException)
-			{
-				return FAIL_RESULT;
-			}
-			else
-			{
-				e.printStackTrace();
-			}
+			return FAIL_RESULT;
 		}
 		catch (ParseException e)
 		{
@@ -145,8 +156,17 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 		// jan 1, 1970 a default to get all messages
 		Date date = new Date(0);
 		editor.putLong("lastUploaded", date.getTime());
-		date = new Date();
-		editor.putLong("tokenAge", date.getTime());
+		
+		if (skippedFacebook)
+		{
+			editor.putLong("tokenAge", SKIPPED_FACEBOOK);
+			System.out.println("Saved Skipped Facebook");
+		}
+		else
+		{
+			date = new Date();
+			editor.putLong("tokenAge", date.getTime());			
+		}
 		// commits to save
 		editor.commit();
 	}
