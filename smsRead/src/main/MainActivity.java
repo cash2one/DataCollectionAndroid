@@ -18,12 +18,11 @@ import android.util.Log;
 
 public class MainActivity extends Activity
 {
-	public static final String BASE_URL = "http://128.255.45.52:7777/DataCollection";
+	//public static final String BASE_URL = "http://128.255.45.52:7777/DataCollection";
+	public static final String BASE_URL = "http://192.168.1.104:8002/DataCollection";
 	public static final String ANDROID_UPLOAD_URL = BASE_URL + "/postandroid/";
 	public static final String POST_TOKEN_URL = BASE_URL + "/newtoken/";
-	public static final String SURVEY_URL = BASE_URL + "/servey/"; // TODO: Fix
-																	// path on
-																	// server
+	public static final String SURVEY_URL = BASE_URL + "/survey/"; 
 	public static final String CREATE_USER_URL = BASE_URL + "/makeuser/";
 	public static final String GET_HELP_URL = BASE_URL + "/gethelp/";
 	public static final String REPORT_BULLYING_URL = BASE_URL
