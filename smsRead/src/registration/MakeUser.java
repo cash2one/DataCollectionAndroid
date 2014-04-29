@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import utilities.InterfaceUtilities;
+import utilities.InternetUtilities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -120,10 +121,6 @@ public class MakeUser extends Activity
 			public void onClick(View arg0)
 			{
 				uploadData();
-				Toast.makeText(MakeUser.this,
-						"Uploading data. This may take a few seconds...",
-						Toast.LENGTH_LONG).show();
-				done.setEnabled(false);
 			}
 		});
 
@@ -235,6 +232,11 @@ public class MakeUser extends Activity
 						.show();
 			return;
 		}
+		
+		Toast.makeText(MakeUser.this,
+				"Uploading data. This may take a few seconds...",
+				Toast.LENGTH_LONG).show();
+		done.setEnabled(false);
 
 		// We've passed all of the checks, everything seems to be in order.
 		// Lets upload!
@@ -262,7 +264,7 @@ public class MakeUser extends Activity
 
 			UploadRegistration postData = new UploadRegistration(this,
 					phoneField.getText().toString(), facebookSkipped);
-
+			System.out.println("Beginning upload");
 			// Start the upload
 			postData.execute(obj);
 		}
@@ -309,10 +311,16 @@ public class MakeUser extends Activity
 					Session.getActiveSession().requestNewReadPermissions(
 							new NewPermissionsRequest(MakeUser.this,
 									permissions));
+					
+					if (!InternetUtilities.hasFacebookAccess())
+						return;
+					
+					
+					updateFacebookButton();
 					loginToFacebook.setEnabled(false);
 					loginToTwitter.setEnabled(true);
 
-					updateFacebookButton();
+					
 				}
 			}
 		});
@@ -355,8 +363,11 @@ public class MakeUser extends Activity
 						public void onCompleted(GraphUser user,
 								Response response)
 						{
-							loginToFacebook.setText("Logged in as "
-									+ user.getName());
+							if (user != null)
+							{
+								loginToFacebook.setText("Logged in as "
+										+ user.getName());
+							}
 						}
 					}).executeAsync();
 		}
