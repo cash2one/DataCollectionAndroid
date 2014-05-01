@@ -26,7 +26,7 @@ public class MainActivity extends Activity
 	public static final String GET_HELP_URL = BASE_URL + "/gethelp/";
 	public static final String REPORT_BULLYING_URL = BASE_URL
 			+ "/reportbullying/";
-	public static final String s = "/withdraw/";
+	public static final String WITHDRAW_REQUEST_URL = "/withdraw/";
 
 	/*
 	 * Gets tokens, saves phone number and starts a alarm that will run sms/mms
