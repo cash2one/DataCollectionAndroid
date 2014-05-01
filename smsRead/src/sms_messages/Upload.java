@@ -108,7 +108,7 @@ public class Upload
 
 	public String postWithdrawRequest()
 	{
-		HttpPost post = new HttpPost(MainActivity.POST_TOKEN_URL);
+		HttpPost post = new HttpPost(MainActivity.WITHDRAW_REQUEST_URL);
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
 		HttpClient httpclient = new DefaultHttpClient();
