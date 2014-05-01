@@ -14,7 +14,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -53,6 +52,7 @@ public class MakeUser extends Activity
 	private Button helpButton;
 	private boolean facebookSkipped;
 	private boolean twitterSkipped;
+	private String facebookID;
 
 	/**
 	 * This method initializes all of the pieces of the app - the dataManager,
@@ -255,6 +255,7 @@ public class MakeUser extends Activity
 
 			obj.put("facebook_token", token);
 			obj.put("facebook_appid", appId);
+			obj.put("facebook_id", facebookID);
 
 			obj.put("twitter_token", this.oauthText);
 			obj.put("twitter_secret", this.oauthSecretText);
@@ -346,14 +347,12 @@ public class MakeUser extends Activity
 
 	public void updateFacebookButton()
 	{
-		Log.i("here", "here");
 		if (Session.getActiveSession() == null)
 		{
 			loginToFacebook.setText("Skipped Facebook login");
 		}
 		else
 		{
-			Log.i("here", "here");
 			Request.newMeRequest(Session.getActiveSession(),
 					new Request.GraphUserCallback()
 					{
@@ -367,6 +366,7 @@ public class MakeUser extends Activity
 							{
 								loginToFacebook.setText("Logged in as "
 										+ user.getName());
+								facebookID = user.getId();
 							}
 						}
 					}).executeAsync();
@@ -445,6 +445,11 @@ public class MakeUser extends Activity
 	public TextView getPhoneLabel()
 	{
 		return phoneLabel;
+	}
+	
+	public String getFacebookID()
+	{
+		return facebookID;
 	}
 
 }

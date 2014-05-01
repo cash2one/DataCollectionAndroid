@@ -78,6 +78,10 @@ public class TwitterUtilities
 			{
 				System.err.println("Error retrieving access token");
 			}
+			catch (IllegalStateException e)
+			{
+				System.out.println("Something went wrong...");
+			}
 			catch (NullPointerException e)
 			{
 				System.out.println("User pressed cancel. Returning null.");
