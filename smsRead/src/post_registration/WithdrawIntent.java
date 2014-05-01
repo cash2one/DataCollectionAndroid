@@ -13,7 +13,7 @@ public class WithdrawIntent extends IntentService
 
 	public WithdrawIntent()
 	{
-		super("Withdraw Intent");
+		super("WithdrawIntent");
 	}
 
 	@Override

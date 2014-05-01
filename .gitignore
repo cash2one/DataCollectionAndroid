@@ -216,3 +216,4 @@ pip-log.txt
 *.class
 *.class
 smsRead/gen/edu/uiowa/datacollection/sms/R.java
+smsRead/gen/com/facebook/android/R.java

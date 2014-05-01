@@ -3,7 +3,9 @@ package utilities;
 import post_registration.SecondaryActivity;
 import post_registration.WithdrawIntent;
 import sms_messages.User;
+import alarmreceiver.AlarmReceiver;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -117,11 +119,7 @@ public class InterfaceUtilities
 								public void onClick(DialogInterface dialog,
 										int which)
 								{
-									Intent intent = new Intent(context,
-											WithdrawIntent.class);
-									intent.putExtra("phone_number", new User(
-											context).getUser());
-									context.startActivity(intent);
+									withdraw(context);
 								}
 							}, context);
 				}
@@ -131,6 +129,24 @@ public class InterfaceUtilities
 		dialog = builder.create();// AlertDialog dialog; create like this
 									// outside onClick
 		dialog.show();
+	}
+	
+	private static void withdraw(final Activity context)
+	{
+		Intent intent = new Intent(context,
+				WithdrawIntent.class);
+		intent.putExtra("phone_number", new User(
+				context).getUser());
+
+		//Disable the alarm
+		AlarmManager alarmMgr = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		Intent alarm = new Intent(context, AlarmReceiver.class);
+		PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 7, alarm, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmMgr.cancel(alarmIntent);
+		
+		//Send something to the server
+		context.startService(intent);
 	}
 
 	public static void createInfoDialogWithExitButtonAndCustomAction(
