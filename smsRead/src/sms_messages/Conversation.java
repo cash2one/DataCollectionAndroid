@@ -2,7 +2,6 @@ package sms_messages;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,10 +16,11 @@ import org.json.JSONObject;
  * involved.
  * 
  */
+
 public class Conversation implements Comparable<Conversation> {
 	private List<MessageU> messageList;
-	private Date startTime;
-	private Date endTime;
+	private Long startTime;
+	private Long endTime;
 	private boolean hasParticipant = false;
 	private List<String> particpantList;
 
@@ -55,11 +55,11 @@ public class Conversation implements Comparable<Conversation> {
 		this.messageList = messageList;
 	}
 
-	public Date getStartTime() {
+	public Long getStartTime() {
 		return startTime;
 	}
 
-	public Date getEndTime() {
+	public Long getEndTime() {
 		return endTime;
 	}
 
@@ -79,7 +79,7 @@ public class Conversation implements Comparable<Conversation> {
 		return messageIDList;
 	}
 
-	public Date getParticipateTime() {
+	public Long getParticipateTime() {
 		String pID;
 		pID = messageList.get(0).getSourcePID();
 		for (int i = 0; i < messageList.size(); i++) {
@@ -89,7 +89,7 @@ public class Conversation implements Comparable<Conversation> {
 			}
 		}
 		// should never happen
-		return new Date();
+		return Long.valueOf(0);
 	}
 
 	public List<String> getParticipantList() {

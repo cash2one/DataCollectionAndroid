@@ -23,11 +23,11 @@ public class MessageU implements Comparable<MessageU> {
 	 */
 	private List<String> dPIDList;
 	private String text;
-	private Date createTime;
+	private Long createTime;
 	private int type;// 0 for SMS/MMS message
 
 	public MessageU(String mID, String sPID, List<String> dPIDList,
-			String text, Date createTime) {
+			String text, long createTime) {
 		this.setmID(mID);
 		this.setSourcePID(sPID);
 		this.setDestiPIDList(dPIDList);
@@ -62,11 +62,11 @@ public class MessageU implements Comparable<MessageU> {
 		this.text = text;
 	}
 
-	public Date getCreateTime() {
+	public Long getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
 

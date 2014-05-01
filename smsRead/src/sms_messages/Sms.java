@@ -1,6 +1,7 @@
 package sms_messages;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class Sms {
 				String mID;
 				String Address;
 				String Body;
-				long Date;
+				long theDate;
 				int Type;
 				Date date;
 
@@ -56,8 +57,9 @@ public class Sms {
 					mID = cur.getString(index_id);
 					Address = cur.getString(index_Address);
 					Body = cur.getString(index_Body);
-					Date = cur.getLong(index_Date);
-					date = new Date(Date);
+					theDate = cur.getLong(index_Date);
+					date = new Date(theDate);
+					theDate= (theDate/1000);
 					Type = cur.getInt(index_Type);
 					if(date.after(lastUploaded)){
 					if (Address != null) {
@@ -72,13 +74,13 @@ public class Sms {
 						List<String> destiList = new ArrayList<String>();
 						destiList.add(user);
 						MessageU msgR = new MessageU(mID, Address, destiList,
-								Body, date);
+								Body, theDate);
 						messageList.add(msgR);
 					} else if (Type == 2) {// sent
 						List<String> destiList = new ArrayList<String>();
 						destiList.add(Address);
 						MessageU msgS = new MessageU(mID, user, destiList,
-								Body, date);
+								Body, theDate);
 						messageList.add(msgS);
 					}}
 				} while (cur.moveToNext());

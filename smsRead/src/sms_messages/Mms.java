@@ -38,7 +38,7 @@ public class Mms {
 			try {
 				if (mmsInboxCursor.moveToFirst()) {
 					int id;
-					long Date;
+					long theDate;
 					Date date;
 					String ID;
 					String partId;
@@ -47,11 +47,11 @@ public class Mms {
 					do {
 						MessageU msgS = new MessageU();
 						id = mmsInboxCursor.getInt(0);
-						Date = (mmsInboxCursor.getLong(3) * 1000);
-						date = new Date(Date);
+						theDate = (mmsInboxCursor.getLong(3) * 1000);
+						date = new Date(theDate);
 						if(date.after(lastUploaded)){
 						ID = Integer.toString(id);
-						msgS.setCreateTime(date);
+						msgS.setCreateTime(theDate);
 						msgS.setmID(ID);
 						String selectionPart = "mid=" + ID;
 						Uri uri = Uri.parse("content://mms/part");
