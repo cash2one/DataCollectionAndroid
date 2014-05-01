@@ -1,6 +1,8 @@
 package utilities;
 
 import post_registration.SecondaryActivity;
+import post_registration.WithdrawIntent;
+import sms_messages.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
@@ -110,16 +112,15 @@ public class InterfaceUtilities
 				{
 					createInfoDialogWithExitButtonAndCustomAction(
 							withdrawStatement, withdrawTitle, false,
-							"Email us", new DialogInterface.OnClickListener()
+							"Withdraw", new DialogInterface.OnClickListener()
 							{
 								public void onClick(DialogInterface dialog,
 										int which)
 								{
-									String recepientEmail = "support@uiowa.cyberbullying.edu";
-									Intent intent = new Intent(
-											Intent.ACTION_SENDTO);
-									intent.setData(Uri.parse("mailto:"
-											+ recepientEmail));
+									Intent intent = new Intent(context,
+											WithdrawIntent.class);
+									intent.putExtra("phone_number", new User(
+											context).getUser());
 									context.startActivity(intent);
 								}
 							}, context);

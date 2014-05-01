@@ -1,5 +1,7 @@
 package alarmreceiver;
 
+import java.util.Calendar;
+
 import sms_messages.MessageService;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -46,16 +48,16 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
 		 * randomness so that not all users are trying to upload at the same
 		 * time.
 		 */
-		 alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-		 AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_DAY,
-		 alarmIntent);
+//		 alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//		 AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_DAY,
+//		 alarmIntent);
 
 		/*
 		 * test alarm goes off right away and every minute after.
 		 */
-//		Calendar calendar = Calendar.getInstance();
-//		alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
-//				calendar.getTimeInMillis() + 60 * 1000, 1000 * 60, alarmIntent);
+		Calendar calendar = Calendar.getInstance();
+		alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
+				calendar.getTimeInMillis() + 60 * 1000, 1000 * 60, alarmIntent);
 
 		// Enable BootReceiver to automatically restart the alarm when
 		// the device is rebooted.
