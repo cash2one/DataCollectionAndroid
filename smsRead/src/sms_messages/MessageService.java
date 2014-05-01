@@ -83,6 +83,7 @@ public class MessageService extends IntentService
 			return;
 		}
 		
+		
 		if (theUser.getTokenAgeLong() != UploadRegistration.SKIPPED_FACEBOOK)
 		{
 			System.out.println("Starting facebook reauth");
