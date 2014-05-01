@@ -58,7 +58,7 @@ public class MessageService extends IntentService
 			Log.i("json", "json Exception");
 			e1.printStackTrace();
 		}
-
+		Log.i("data",uploadData.toString());
 		Upload upload = new Upload(uploadData);
 		String post = upload.post();// json to server
 		if (post != null && post.equals("worked"))
