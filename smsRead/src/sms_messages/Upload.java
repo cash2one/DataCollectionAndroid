@@ -1,7 +1,6 @@
 package sms_messages;
 
 import java.io.IOException;
-import java.net.ConnectException;
 
 import main.MainActivity;
 
@@ -15,8 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 /**
  * Author Max Uploads json to server
  * 
@@ -28,17 +25,6 @@ public class Upload
 	public Upload(JSONObject json)
 	{
 		this.data = json.toString().getBytes();
-	}
-
-	/**
-	 * 
-	 * By Tom Empty constructor, can't be used for posting data. Its used for
-	 * the post registration activity
-	 * 
-	 */
-	public Upload()
-	{
-
 	}
 
 	public String post()
@@ -57,7 +43,8 @@ public class Upload
 		}
 		catch (IOException e)
 		{
-			Log.i("ERROR", "Could not connect to server");
+			System.out.println("ERROR: Unable to connect to server");
+			System.out.println(e.getMessage());
 			return null;
 		}
 		String result = null;
@@ -73,8 +60,9 @@ public class Upload
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR: Unable to connect to server");
+			System.out.println(e.getMessage());
+			return null;
 		}
 
 		return result;
@@ -96,12 +84,8 @@ public class Upload
 		}
 		catch (IOException e)
 		{
-			if (e instanceof ConnectException)
-			{
-				Log.i("ERROR", "Unable to connect to server");
-				return null;
-			}
-			e.printStackTrace();
+			System.out.println("ERROR: Unable to connect to server");
+			System.out.println(e.getMessage());
 		}
 		String result = null;
 		try
@@ -118,6 +102,45 @@ public class Upload
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public String postWithdrawRequest()
+	{
+		HttpPost post = new HttpPost(MainActivity.WITHDRAW_REQUEST_URL);
+		post.setEntity(new ByteArrayEntity(data));
+		HttpResponse resp = null;
+		HttpClient httpclient = new DefaultHttpClient();
+		try
+		{
+			resp = httpclient.execute(post);
+		}
+		catch (ClientProtocolException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			System.out.println("ERROR: Unable to connect to server");
+			System.out.println(e.getMessage());
+			return null;
+		}
+		String result = null;
+		try
+		{
+			result = EntityUtils.toString(resp.getEntity());
+
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			System.out.println("ERROR: Unable to connect to server");
+			System.out.println(e.getMessage());
+			return null;
 		}
 		return result;
 	}
