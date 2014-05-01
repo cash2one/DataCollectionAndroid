@@ -106,7 +106,7 @@ public class MessageU implements Comparable<MessageU> {
 			j.put("sPID", this.getSourcePID());
 			j.put("dPID", this.getDestiPIDList());
 			j.put("text", this.getText());
-			j.put("createTime", this.getCreateTime());
+			j.put("createTime", this.getCreateTime().toString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
