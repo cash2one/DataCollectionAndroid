@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SecondaryActivity">
+    tools:context=".SecondaryActivity" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -45,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_help_button_text" />
-
     </LinearLayout>
 
     <TextView
@@ -59,5 +58,16 @@
         android:gravity="center"
         android:text="@string/post_registration_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/lastUploadText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:text="Last Upload: " />
 
 </RelativeLayout>
