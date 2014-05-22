@@ -58,14 +58,18 @@ public class MessageService extends IntentService
 			Log.i("json", "json Exception");
 			e1.printStackTrace();
 		}
+		
 		Log.i("data",uploadData.toString());
+		
 		Upload upload = new Upload(uploadData);
 		String post = upload.post();// json to server
+		Date date = new Date();
+		
 		if (post != null && post.equals("worked"))
-		{
-			Date date = new Date();
 			theUser.setDate(date);
-		}
+		else
+			theUser.setLastFailed(date);
+		
 		if (ServerUtilities.checkForSurvey(this))
 		{
 			InterfaceUtilities.createNotification(this);

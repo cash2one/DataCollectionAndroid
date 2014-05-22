@@ -47,6 +47,7 @@ public class Upload
 			System.out.println(e.getMessage());
 			return null;
 		}
+		
 		String result = null;
 		try
 		{
@@ -55,12 +56,10 @@ public class Upload
 		}
 		catch (ParseException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IOException e)
 		{
-			System.out.println("ERROR: Unable to connect to server");
 			System.out.println(e.getMessage());
 			return null;
 		}

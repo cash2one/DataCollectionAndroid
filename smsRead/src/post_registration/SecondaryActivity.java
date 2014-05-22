@@ -1,7 +1,10 @@
 package post_registration;
 
+import java.util.Date;
+
 import main.MainActivity;
 import registration.MakeUser;
+import sms_messages.User;
 import utilities.InterfaceUtilities;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import edu.uiowa.datacollection.sms.R;
 
@@ -20,6 +24,7 @@ public class SecondaryActivity extends Activity
 	private Button getHelpButton;
 	private Button reportButton;
 	private Button helpButton;
+	private TextView uploadTimeText;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -79,6 +84,26 @@ public class SecondaryActivity extends Activity
 				InterfaceUtilities.createHelpDialog(SecondaryActivity.this);
 			}
 		});
+
+		uploadTimeText = (TextView) findViewById(R.id.lastUploadText);
+
+		User user = new User(getApplicationContext());
+		Date lastFail = user.getLastFail();
+		Date lastUpload = user.getDate();
+
+		if (lastUpload.after(lastFail))
+		{
+			uploadTimeText.setText("Successfully uploaded: "
+					+ lastUpload.toString());
+		}
+		else if (lastFail.getTime() == 0)
+		{
+			uploadTimeText.setText("No uploads yet.");
+		}
+		else
+		{
+			uploadTimeText.setText("Could not upload: " + lastFail.toString());
+		}
 	}
 
 	protected void getHelp()

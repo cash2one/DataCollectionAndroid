@@ -15,18 +15,26 @@ public class User
 	private Date tokenAge;
 	private Context context;
 	private long tokenAgeLong;
+	private Date lastFail;
 
 	public User(Context context)
 	{
 		this.context = context;
 		SharedPreferences sharedPref = context.getApplicationContext()
 				.getSharedPreferences("mypref", 0);
+		
 		this.user = sharedPref.getString("phone_number", "");
+		
 		long temp = sharedPref.getLong("lastUploaded", 0);
 		this.date = new Date(temp);
+		
 		temp = sharedPref.getLong("tokenAge", 0);
 		this.tokenAge = new Date(temp);
 		this.tokenAgeLong = temp;
+		
+
+		temp = sharedPref.getLong("lastFail", 0);
+		lastFail = new Date(temp);
 	}
 
 	public Date getTokenAge()
@@ -71,4 +79,20 @@ public class User
 		return this.user;
 	}
 
+	public void setLastFailed(Date date)
+	{
+		// sets date in user and in shared preferences
+		this.lastFail = date;
+		SharedPreferences sharedPref = context.getApplicationContext()
+				.getSharedPreferences("mypref", 0);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putLong("lastFail", date.getTime());
+		// commits to save
+		editor.commit();
+	}
+	
+	public Date getLastFail()
+	{
+		return lastFail;
+	}
 }

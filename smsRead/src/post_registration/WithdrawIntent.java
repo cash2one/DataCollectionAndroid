@@ -39,7 +39,8 @@ public class WithdrawIntent extends IntentService
 		}
 		
 		Upload newToken = new Upload(uploadData);
-		newToken.postWithdrawRequest();
+		String result = newToken.postWithdrawRequest();
+		System.out.println(result);
 	}
 
 }

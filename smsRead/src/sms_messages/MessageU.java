@@ -1,6 +1,5 @@
 package sms_messages;
 
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
