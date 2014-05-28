@@ -2,6 +2,7 @@ package post_registration;
 
 import java.util.ArrayList;
 
+import main.MainActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +24,13 @@ public class ReAuthenticate extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
-		if (Session.getActiveSession() != null)
-			Session.getActiveSession().closeAndClearTokenInformation();
+		if (Session.getActiveSession() != null && Session.getActiveSession().getState() == SessionState.OPENED)
+		{
+			System.out.println("Here");
+			Intent newFaceBookToken = new Intent(this, MainActivity.class);
+			newFaceBookToken.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(newFaceBookToken);
+		}
 		
 		Session.openActiveSession(this, true, new Session.StatusCallback()
 		{
@@ -61,7 +67,6 @@ public class ReAuthenticate extends Activity
 				}
 			}
 		});
-		finish();
 	}
 
 	@Override
