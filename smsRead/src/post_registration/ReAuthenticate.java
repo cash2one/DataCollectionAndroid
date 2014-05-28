@@ -61,6 +61,7 @@ public class ReAuthenticate extends Activity
 				}
 			}
 		});
+		finish();
 	}
 
 	@Override
@@ -69,5 +70,6 @@ public class ReAuthenticate extends Activity
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode,
 				resultCode, data);
+		
 	}
 }

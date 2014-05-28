@@ -57,7 +57,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
 		 */
 		Calendar calendar = Calendar.getInstance();
 		alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
-				calendar.getTimeInMillis() + 60 * 1000, 1000 * 60, alarmIntent);
+				calendar.getTimeInMillis() + 30 * 1000, 1000 * 30, alarmIntent);
 		
 
 		// Enable BootReceiver to automatically restart the alarm when

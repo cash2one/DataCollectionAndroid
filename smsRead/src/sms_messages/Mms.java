@@ -96,8 +96,7 @@ public class Mms {
 				System.out
 						.println("MMSMonitor :: startMMSMonitoring Exception== "
 								+ e.getMessage());
-			}
-			if (mmsInboxCursor != null) {
+			}finally {
 				mmsInboxCursor.close();
 				mmsInboxCursor = null;
 			}

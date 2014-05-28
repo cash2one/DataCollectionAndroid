@@ -40,6 +40,7 @@ public class PostTokenIntent extends IntentService
 		}
 		Upload newToken = new Upload(uploadData);
 		newToken.postToken();
+		this.stopService(intent);
 	}
 
 }

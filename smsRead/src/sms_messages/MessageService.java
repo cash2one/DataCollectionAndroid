@@ -95,11 +95,11 @@ public class MessageService extends IntentService
 			newFaceBookToken.putExtra("phone_number", theUser.getUser());
 			newFaceBookToken.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(newFaceBookToken);
+			
 		}
 		else
 		{
 			System.out.println("Not starting Facebook reauth");
 		}
 	}
-
 }

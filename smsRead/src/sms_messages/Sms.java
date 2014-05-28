@@ -32,13 +32,12 @@ public class Sms {
 		//date the user last upload or jan 1, 1970 by default
 		Date lastUploaded = theUser.getDate();
 		List<MessageU> messageList = new ArrayList<MessageU>();
-		try {
-			Uri uri = Uri.parse(SMS_URI_ALL);
-			String[] projection = new String[] { "_id", "address", "person",
+		Uri uri = Uri.parse(SMS_URI_ALL);
+		String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
-			Cursor cur = context.getContentResolver().query(uri, projection,
+		Cursor cur = context.getContentResolver().query(uri, projection,
 					null, null, "date desc");
-
+		try {
 			if (cur.moveToFirst()) {
 				int index_id = cur.getColumnIndex("_id");
 				int index_Address = cur.getColumnIndex("address");
@@ -84,14 +83,13 @@ public class Sms {
 					}}
 				} while (cur.moveToNext());
 
-				if (cur != null) {
-					cur.close();
-					cur = null;
-				}
 			}
 
 		} catch (SQLiteException ex) {
 			Log.d("SQLiteException in getSmsInPhone", ex.getMessage());
+		}finally{
+			cur.close();
+			cur = null;
 		}
 
 		return messageList;

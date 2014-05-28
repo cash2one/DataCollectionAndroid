@@ -89,7 +89,12 @@ public class MessageU implements Comparable<MessageU> {
 	public int compareTo(MessageU arg0) {
 		return this.getCreateTime().compareTo(arg0.getCreateTime());
 	}
-
+	
+	// FindBug told me to add because I overrode equals
+	public int hashCode(){
+		assert false : "hashCode not designed";
+		return 42; // arbitrary constant 
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof MessageU))

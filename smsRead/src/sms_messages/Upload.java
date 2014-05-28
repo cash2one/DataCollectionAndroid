@@ -11,6 +11,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
@@ -32,10 +35,19 @@ public class Upload
 		HttpPost post = new HttpPost(MainActivity.ANDROID_UPLOAD_URL);
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
-		HttpClient httpclient = new DefaultHttpClient();
-		try
-		{
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		int timeoutConnection = 15000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 15000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		DefaultHttpClient httpclient = new DefaultHttpClient(httpParameters);
+		String result = null;
+		try{
 			resp = httpclient.execute(post);
+			if (resp != null)
+				result = EntityUtils.toString(resp.getEntity());
 		}
 		catch (ClientProtocolException e)
 		{
@@ -47,23 +59,10 @@ public class Upload
 			System.out.println(e.getMessage());
 			return null;
 		}
-		
-		String result = null;
-		try
-		{
-			if (resp != null)
-				result = EntityUtils.toString(resp.getEntity());
-		}
 		catch (ParseException e)
 		{
 			e.printStackTrace();
 		}
-		catch (IOException e)
-		{
-			System.out.println(e.getMessage());
-			return null;
-		}
-
 		return result;
 	}
 
@@ -72,10 +71,19 @@ public class Upload
 		HttpPost post = new HttpPost(MainActivity.POST_TOKEN_URL);
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
-		HttpClient httpclient = new DefaultHttpClient();
-		try
-		{
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		int timeoutConnection = 15000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 15000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		DefaultHttpClient httpclient = new DefaultHttpClient(httpParameters);
+		String result = null;
+		try{
 			resp = httpclient.execute(post);
+			if (resp != null)
+				result = EntityUtils.toString(resp.getEntity());
 		}
 		catch (ClientProtocolException e)
 		{
@@ -85,35 +93,34 @@ public class Upload
 		{
 			System.out.println("ERROR: Unable to connect to server");
 			System.out.println(e.getMessage());
-		}
-		String result = null;
-		try
-		{
-			result = EntityUtils.toString(resp.getEntity());
-
+			return null;
 		}
 		catch (ParseException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
 	}
+	
 
 	public String postWithdrawRequest()
 	{
 		HttpPost post = new HttpPost(MainActivity.WITHDRAW_REQUEST_URL);
 		post.setEntity(new ByteArrayEntity(data));
 		HttpResponse resp = null;
-		HttpClient httpclient = new DefaultHttpClient();
-		try
-		{
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		int timeoutConnection = 15000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 15000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		DefaultHttpClient httpclient = new DefaultHttpClient(httpParameters);
+		String result = null;
+		try{
 			resp = httpclient.execute(post);
+			if (resp != null)
+				result = EntityUtils.toString(resp.getEntity());
 		}
 		catch (ClientProtocolException e)
 		{
@@ -125,21 +132,9 @@ public class Upload
 			System.out.println(e.getMessage());
 			return null;
 		}
-		String result = null;
-		try
-		{
-			result = EntityUtils.toString(resp.getEntity());
-
-		}
 		catch (ParseException e)
 		{
 			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			System.out.println("ERROR: Unable to connect to server");
-			System.out.println(e.getMessage());
-			return null;
 		}
 		return result;
 	}
