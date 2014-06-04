@@ -37,11 +37,11 @@ public class ServerUtilities
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
 		// The default value is zero, that means the timeout is not used. 
-		int timeoutConnection = 3000;
+		int timeoutConnection = 30000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 		// Set the default socket timeout (SO_TIMEOUT) 
 		// in milliseconds which is the timeout for waiting for data.
-		int timeoutSocket = 5000;
+		int timeoutSocket = 50000;
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 		
 		HttpClient httpclient = new DefaultHttpClient(httpParameters);
@@ -72,7 +72,7 @@ public class ServerUtilities
 			Log.i("ERROR", "Unable to connect to server");
 			return false;
 		}
-		Log.i("Is there a survey?", result);
+		Log.i("Is there a survey?", result.toString());
 		if (!(result.equals("null")))
 		{
 			Uri uri = Uri.parse(result);

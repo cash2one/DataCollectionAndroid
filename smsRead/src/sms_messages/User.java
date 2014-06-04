@@ -16,6 +16,8 @@ public class User
 	private Context context;
 	private long tokenAgeLong;
 	private Date lastFail;
+	private boolean hasFace;
+	private String faceToken;
 
 	public User(Context context)
 	{
@@ -24,6 +26,8 @@ public class User
 				.getSharedPreferences("mypref", 0);
 		
 		this.user = sharedPref.getString("phone_number", "");
+		this.hasFace = sharedPref.getBoolean("hasFace", false);
+		this.faceToken = sharedPref.getString("faceToken", "");
 		
 		long temp = sharedPref.getLong("lastUploaded", 0);
 		this.date = new Date(temp);
@@ -94,5 +98,12 @@ public class User
 	public Date getLastFail()
 	{
 		return lastFail;
+	}
+	
+	public boolean getHasFace(){
+		return hasFace;
+	}
+	public String getToken(){
+		return faceToken;
 	}
 }

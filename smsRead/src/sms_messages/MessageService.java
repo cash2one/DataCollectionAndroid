@@ -59,13 +59,13 @@ public class MessageService extends IntentService
 			e1.printStackTrace();
 		}
 		
-		Log.i("data",uploadData.toString());
+		//Log.i("data",uploadData.toString());
 		
 		Upload upload = new Upload(uploadData);
 		String post = upload.post();// json to server
 		Date date = new Date();
 		
-		if (post != null && post.equals("worked"))
+		if (post.equals("worked"))
 			theUser.setDate(date);
 		else
 			theUser.setLastFailed(date);
@@ -86,8 +86,8 @@ public class MessageService extends IntentService
 			Log.i("ERROR", "Could not access Facebook, must not have internet");
 			return;
 		}
-		
-		
+		if(theUser.getHasFace()){
+		if(upload.checkToken(theUser.getToken()).equals("true")){
 		if (theUser.getTokenAgeLong() != UploadRegistration.SKIPPED_FACEBOOK)
 		{
 			System.out.println("Starting facebook reauth");
@@ -102,4 +102,6 @@ public class MessageService extends IntentService
 			System.out.println("Not starting Facebook reauth");
 		}
 	}
+}
+}
 }

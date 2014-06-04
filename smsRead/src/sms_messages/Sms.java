@@ -89,9 +89,10 @@ public class Sms {
 			Log.d("SQLiteException in getSmsInPhone", ex.getMessage());
 		}finally{
 			cur.close();
-			cur = null;
 		}
-
+		if (!(cur.isClosed())){
+			cur.close();
+		}
 		return messageList;
 	}
 

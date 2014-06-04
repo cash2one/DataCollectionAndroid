@@ -3,9 +3,13 @@ package post_registration;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.facebook.Session;
+
 import sms_messages.Upload;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class PostTokenIntent extends IntentService
@@ -40,7 +44,14 @@ public class PostTokenIntent extends IntentService
 		}
 		Upload newToken = new Upload(uploadData);
 		newToken.postToken();
+		SharedPreferences sharedPref = getApplicationContext()
+				.getSharedPreferences("mypref", 0);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString("faceToken",token);
+		editor.commit();
+		
 		this.stopService(intent);
+		
 	}
 
 }

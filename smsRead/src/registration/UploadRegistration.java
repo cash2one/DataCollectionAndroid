@@ -49,13 +49,15 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 	private Activity context;
 	private String phoneNumber;
 	private boolean skippedFacebook;
+	private String faceToken;
 
 	public UploadRegistration(Activity context, String phoneNumber,
-			boolean skippedFacebook)
+			boolean skippedFacebook,String faceToken)
 	{
 		this.context = context;
 		this.phoneNumber = phoneNumber;
 		this.skippedFacebook = skippedFacebook;
+		this.faceToken = faceToken;
 	}
 
 	protected String doInBackground(JSONObject... params)
@@ -156,6 +158,7 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 		SharedPreferences sharedPref = context.getApplicationContext()
 				.getSharedPreferences("mypref", 0);
 		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString("faceToken",faceToken);
 		editor.putString("phone_number", phoneNumber);
 		// jan 1, 1970 a default to get all messages
 		Date date = new Date(0);
@@ -163,11 +166,13 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 		
 		if (skippedFacebook)
 		{
+			editor.putBoolean("hasFace", false);
 			editor.putLong("tokenAge", SKIPPED_FACEBOOK);
 			System.out.println("Saved Skipped Facebook");
 		}
 		else
-		{
+		{	
+			editor.putBoolean("hasFace", true);
 			date = new Date();
 			editor.putLong("tokenAge", date.getTime());			
 		}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import main.MainActivity;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.facebook.Session;
@@ -30,8 +31,7 @@ public class ReAuthenticate extends Activity
 			Intent newFaceBookToken = new Intent(this, MainActivity.class);
 			newFaceBookToken.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(newFaceBookToken);
-		}
-		
+		}		
 		Session.openActiveSession(this, true, new Session.StatusCallback()
 		{
 			// callback when session changes state
@@ -39,6 +39,7 @@ public class ReAuthenticate extends Activity
 			public void call(Session session, SessionState state,
 					Exception exception)
 			{
+				
 				if (session.isOpened())
 				{
 					ArrayList<String> permissions = new ArrayList<String>();
@@ -67,6 +68,7 @@ public class ReAuthenticate extends Activity
 				}
 			}
 		});
+		
 	}
 
 	@Override

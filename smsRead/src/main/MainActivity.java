@@ -18,7 +18,7 @@ import android.util.Log;
 
 public class MainActivity extends Activity
 {
-	public static final String BASE_URL = "http://172.23.29.107:7775/DataCollection";
+	public static final String BASE_URL = "http://10.0.1.6:7777/DataCollection";
 	public static final String ANDROID_UPLOAD_URL = BASE_URL + "/postandroid/";
 	public static final String POST_TOKEN_URL = BASE_URL + "/newtoken/";
 	public static final String SURVEY_URL = BASE_URL + "/survey/"; 
