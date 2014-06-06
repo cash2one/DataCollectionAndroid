@@ -2,6 +2,8 @@ package registration;
 
 import java.util.ArrayList;
 
+import main.MainActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -61,6 +64,8 @@ public class MakeUser extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		BugSenseHandler.initAndStartSession(this, "7b31e3a2");
+
 		setContentView(R.layout.activity_main);
 
 		// Create the user interface
@@ -244,7 +249,6 @@ public class MakeUser extends Activity
 		try
 		{
 			obj.put("phone_number", phoneField.getText().toString());
-
 			String token = "";
 			String appId = "";
 			if (!facebookSkipped)

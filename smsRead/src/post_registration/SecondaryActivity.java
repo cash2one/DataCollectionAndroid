@@ -15,6 +15,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bugsense.trace.BugSenseHandler;
+
 import edu.uiowa.datacollection.sms.R;
 
 public class SecondaryActivity extends Activity
@@ -29,6 +32,7 @@ public class SecondaryActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		BugSenseHandler.initAndStartSession(SecondaryActivity.this, "7b31e3a2");
 		setContentView(R.layout.post_registration_layout);
 
 		// Create the user interface

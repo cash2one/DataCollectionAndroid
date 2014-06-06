@@ -262,10 +262,10 @@ public class InterfaceUtilities
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context).setSmallIcon(R.drawable.notif_icon)
 				.setContentTitle("Survey")
-				.setContentText("Please complete the survey");
+				.setContentText("Please complete the survey")
+				.setAutoCancel(true);
 		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(context, SecondaryActivity.class);
-
 		// The stack builder object will contain an artificial back stack for
 		// the
 		// started Activity.
@@ -282,6 +282,7 @@ public class InterfaceUtilities
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
+		
 		mNotificationManager.notify(0, mBuilder.build());
 	}
 }

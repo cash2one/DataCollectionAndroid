@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import main.MainActivity;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;
 import com.facebook.SessionState;
@@ -24,9 +24,11 @@ public class ReAuthenticate extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		BugSenseHandler.initAndStartSession(this, "7b31e3a2");
 
 		if (Session.getActiveSession() != null && Session.getActiveSession().getState() == SessionState.OPENED)
 		{
+			
 			System.out.println("Here");
 			Intent newFaceBookToken = new Intent(this, MainActivity.class);
 			newFaceBookToken.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

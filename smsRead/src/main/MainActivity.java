@@ -16,9 +16,11 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
+import com.bugsense.trace.BugSenseHandler;
+
 public class MainActivity extends Activity
 {
-	public static final String BASE_URL = "http://10.0.1.6:7777/DataCollection";
+	public static final String BASE_URL = "http://172.23.1.193:7777/DataCollection";
 	public static final String ANDROID_UPLOAD_URL = BASE_URL + "/postandroid/";
 	public static final String POST_TOKEN_URL = BASE_URL + "/newtoken/";
 	public static final String SURVEY_URL = BASE_URL + "/survey/"; 
@@ -40,8 +42,8 @@ public class MainActivity extends Activity
 		// Call this method if there is an authentication problem, it is only
 		// needed the first time getting the app authenticated with facebook,
 		// and remains for debugging purposes.
+		BugSenseHandler.initAndStartSession(this, "7b31e3a2");
 		getDebugKeyhash();
-
 		SharedPreferences sharedPref = this.getApplicationContext()
 				.getSharedPreferences("mypref", 0);
 		if ((sharedPref.getString("phone_number", null) != null))
