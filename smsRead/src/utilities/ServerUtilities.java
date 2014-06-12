@@ -73,7 +73,7 @@ public class ServerUtilities
 			return false;
 		}
 		Log.i("Is there a survey?", result.toString());
-		if (!(result.equals("null")))
+		if (!(result.equals("null")) && result.length() < 100)
 		{
 			Uri uri = Uri.parse(result);
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);

@@ -20,7 +20,7 @@ import com.bugsense.trace.BugSenseHandler;
 
 public class MainActivity extends Activity
 {
-	public static final String BASE_URL = "http://172.23.1.193:7777/DataCollection";
+	public static final String BASE_URL = "http://128.255.45.52:7777/DataCollection";
 	public static final String ANDROID_UPLOAD_URL = BASE_URL + "/postandroid/";
 	public static final String POST_TOKEN_URL = BASE_URL + "/newtoken/";
 	public static final String SURVEY_URL = BASE_URL + "/survey/"; 
