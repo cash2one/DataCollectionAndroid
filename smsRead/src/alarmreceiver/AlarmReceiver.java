@@ -49,7 +49,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
 		 * time.
 		 */
 		 alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-		 AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_DAY,
+		 AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY,
 		 alarmIntent);
 
 		/*
@@ -57,7 +57,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
 		 */
 //		Calendar calendar = Calendar.getInstance();
 //		alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
-//				calendar.getTimeInMillis()+ (1000 * 60), (1000 *60), alarmIntent);
+//				calendar.getTimeInMillis(), (1000 *60), alarmIntent);
 //		
 
 		// Enable BootReceiver to automatically restart the alarm when

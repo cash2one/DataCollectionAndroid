@@ -67,8 +67,8 @@ public class TwitterUtilities
 
 	public AccessToken getAccessToken(String verifier)
 	{
-		if (accessToken == null)
-		{
+		//if (accessToken == null)
+		//{
 			try
 			{
 				accessToken = twitterFactory.getInstance().getOAuthAccessToken(
@@ -86,7 +86,7 @@ public class TwitterUtilities
 			{
 				System.out.println("User pressed cancel. Returning null.");
 			}
-		}
+		//}
 		return accessToken;
 	}
 
