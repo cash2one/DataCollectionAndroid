@@ -2,12 +2,10 @@ package post_registration;
 
 import java.util.ArrayList;
 
-import main.MainActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;
 import com.facebook.SessionState;
@@ -24,16 +22,10 @@ public class ReAuthenticate extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		BugSenseHandler.initAndStartSession(this, "7b31e3a2");
 
-		if (Session.getActiveSession() != null && Session.getActiveSession().getState() == SessionState.OPENED)
-		{
-			
-			System.out.println("Here");
-			Intent newFaceBookToken = new Intent(this, MainActivity.class);
-			newFaceBookToken.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(newFaceBookToken);
-		}		
+		if (Session.getActiveSession() != null)
+			Session.getActiveSession().closeAndClearTokenInformation();
+		
 		Session.openActiveSession(this, true, new Session.StatusCallback()
 		{
 			// callback when session changes state
@@ -41,7 +33,6 @@ public class ReAuthenticate extends Activity
 			public void call(Session session, SessionState state,
 					Exception exception)
 			{
-				
 				if (session.isOpened())
 				{
 					ArrayList<String> permissions = new ArrayList<String>();
@@ -70,7 +61,6 @@ public class ReAuthenticate extends Activity
 				}
 			}
 		});
-		
 	}
 
 	@Override
@@ -79,6 +69,5 @@ public class ReAuthenticate extends Activity
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode,
 				resultCode, data);
-		
 	}
 }

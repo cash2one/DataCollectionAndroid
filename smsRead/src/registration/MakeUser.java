@@ -295,6 +295,9 @@ public class MakeUser extends Activity
 	 */
 	private void openFacebookSession()
 	{
+		if(Session.getActiveSession()!=null){
+			Session.getActiveSession().closeAndClearTokenInformation();
+		}
 		// start Facebook Login
 		Session.openActiveSession(this, true, new Session.StatusCallback()
 		{
