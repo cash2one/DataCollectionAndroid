@@ -47,7 +47,7 @@ public class Mms {
 					do {
 						MessageU msgS = new MessageU();
 						id = mmsInboxCursor.getInt(0);
-						theDate = (mmsInboxCursor.getLong(3) * 1000);
+						theDate = (mmsInboxCursor.getLong(3));
 						date = new Date(theDate);
 						if(date.after(lastUploaded)){
 						ID = Integer.toString(id);

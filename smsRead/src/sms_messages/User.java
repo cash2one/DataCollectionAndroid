@@ -1,9 +1,12 @@
 package sms_messages;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import main.MainActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * Access to phone number set in the user creation activity.
@@ -28,8 +31,16 @@ public class User
 		this.user = sharedPref.getString("phone_number", "");
 		this.hasFace = sharedPref.getBoolean("hasFace", false);
 		this.faceToken = sharedPref.getString("faceToken", "");
-		
-		long temp = sharedPref.getLong("lastUploaded", 0);
+		Long DStartDate = (long) 0;
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+			Date Startdate = sdf.parse(MainActivity.STARTINGDATE);
+			DStartDate = Startdate.getTime();
+		}
+		catch (Exception e) {
+			Log.e("Date error in user", "error",e);
+		}
+		long temp = sharedPref.getLong("lastUploaded", DStartDate);
 		this.date = new Date(temp);
 		
 		temp = sharedPref.getLong("tokenAge", 0);

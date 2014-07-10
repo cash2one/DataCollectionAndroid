@@ -29,6 +29,9 @@ public class MainActivity extends Activity
 	public static final String REPORT_BULLYING_URL = BASE_URL
 			+ "/reportbullying/";
 	public static final String WITHDRAW_REQUEST_URL = BASE_URL + "/withdraw/";
+	//Date to start collecting text messages. format day-month-year hour:min:sec
+	public static final String STARTINGDATE = "07-09-1989 11:11:11";
+	
 
 	/*
 	 * Gets tokens, saves phone number and starts a alarm that will run sms/mms
