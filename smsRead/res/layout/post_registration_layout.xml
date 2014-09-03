@@ -35,12 +35,6 @@
             android:text="@string/get_help_button_text" />
 
         <Button
-            android:id="@+id/reportBullyingButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/report_bullying_button_text" />
-
-        <Button
             android:id="@+id/helpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

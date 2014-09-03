@@ -13,8 +13,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
+//import android.util.Base64;
+//import android.util.Log;
 
 import com.bugsense.trace.BugSenseHandler;
 
@@ -80,7 +80,7 @@ public class MainActivity extends Activity
 		}
 		catch (NameNotFoundException e1)
 		{
-			Log.i("ERROR:", "Couldn't make info");
+			//Log.i("ERROR:", "Couldn't make info");
 		}
 
 		for (Signature signature : info.signatures)
@@ -92,11 +92,11 @@ public class MainActivity extends Activity
 			}
 			catch (NoSuchAlgorithmException e)
 			{
-				Log.i("ERROR:", "Couldn't make md");
+				//Log.i("ERROR:", "Couldn't make md");
 			}
 			md.update(signature.toByteArray());
-			Log.i("KeyHash for Facebook:",
-					Base64.encodeToString(md.digest(), Base64.DEFAULT));
+			//Log.i("KeyHash for Facebook:",
+					//Base64.encodeToString(md.digest(), Base64.DEFAULT));
 		}
 	}
 }

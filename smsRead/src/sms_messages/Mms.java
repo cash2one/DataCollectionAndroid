@@ -28,7 +28,7 @@ public class Mms {
 		String user = theUser.getUser();
 		//date the user last upload or jan 1, 1970 by default
 		Date lastUploaded = theUser.getDate();
-		String lastMessage = null;
+		String lastMessage = "";
 		List<MessageU> messageList = new ArrayList<MessageU>();
 		Uri mmsInboxUri = Uri.parse("content://mms");
 		String[] projection = new String[] { "_id", "msg_box", "ct_t", "date" };
@@ -43,12 +43,12 @@ public class Mms {
 					String ID;
 					String partId;
 					String type;
-					String body = null;
+					String body = "";
 					do {
 						MessageU msgS = new MessageU();
 						id = mmsInboxCursor.getInt(0);
 						theDate = (mmsInboxCursor.getLong(3));
-						date = new Date(theDate);
+						date = new Date((theDate*1000));
 						if(date.after(lastUploaded)){
 						ID = Integer.toString(id);
 						msgS.setCreateTime(theDate);
@@ -76,6 +76,7 @@ public class Mms {
 									}
 								} while (cursor.moveToNext());
 								msgS.setText(body);
+								//Log.i("getText", msgS.getText());
 							}
 						}
 						if (cursor != null) {
@@ -83,19 +84,19 @@ public class Mms {
 							cursor = null;
 						}
 						getMMSAddress(context, ID, msgS, user);
+						if(msgS.getText() != null){
 						if (!(msgS.getDestiPIDList().get(0).equals("Draft"))
 								&& !(msgS.getText().equals(lastMessage))) {
 							lastMessage = msgS.getText();
 							messageList.add(msgS);
-						}
+						}}
 						}} while (mmsInboxCursor.moveToNext());
 
 				}
 			} catch (Exception e) {
 
-				System.out
-						.println("MMSMonitor :: startMMSMonitoring Exception== "
-								+ e.getMessage());
+				//Log.e("mms error", "got and error", e);
+	
 			}finally {
 				mmsInboxCursor.close();
 				mmsInboxCursor = null;
@@ -164,14 +165,14 @@ public class Mms {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("MMSMonitor :: startMMSMonitoring Exception== "
+			System.out.println("in getText MMSMonitor :: startMMSMonitoring Exception== "
 					+ e.getMessage());
 		} finally {
 			if (is != null) {
 				try {
 					is.close();
 				} catch (IOException e) {
-					Log.i("debug", "cursor closing error");
+					//Log.i("debug", "cursor closing error");
 				}
 			}
 		}

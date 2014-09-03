@@ -30,6 +30,7 @@ public class Upload
 
 	public Upload(JSONObject json)
 	{
+		//Log.i("json",json.toString());
 		this.data = json.toString().getBytes();
 	}
 
@@ -160,7 +161,7 @@ public class Upload
 			resp = httpclient.execute(get);
 			if (resp != null){
 				result = EntityUtils.toString(resp.getEntity());
-				Log.i("result",result);
+				//Log.i("result",result);
 				JSONObject json = new JSONObject(result);
 				result = String.valueOf(json.has("error"));
 				}

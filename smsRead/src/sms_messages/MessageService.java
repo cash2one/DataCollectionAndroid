@@ -55,7 +55,7 @@ public class MessageService extends IntentService
 		}
 		catch (JSONException e1)
 		{
-			Log.i("json", "json Exception");
+			//Log.i("json", "json Exception");
 			e1.printStackTrace();
 		}
 		
@@ -83,7 +83,7 @@ public class MessageService extends IntentService
 		catch (UnknownHostException e)
 		{
 			// No internet
-			Log.i("ERROR", "Could not access Facebook, must not have internet");
+			//Log.i("ERROR", "Could not access Facebook, must not have internet");
 			return;
 		}
 		if(theUser.getHasFace()){

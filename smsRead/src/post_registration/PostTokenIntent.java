@@ -40,7 +40,7 @@ public class PostTokenIntent extends IntentService
 		catch (JSONException e1)
 		{
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		}
 		Upload newToken = new Upload(uploadData);
 		newToken.postToken();

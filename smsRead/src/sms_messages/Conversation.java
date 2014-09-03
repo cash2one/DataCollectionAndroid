@@ -96,8 +96,11 @@ public class Conversation implements Comparable<Conversation> {
 		if (!hasParticipant) {
 			Set<String> s = new LinkedHashSet<String>();
 			for (int i = 0; i < messageList.size(); i++) {
-				s.add(messageList.get(i).getSourcePID());
-				s.addAll(messageList.get(i).getDestiPIDList());
+				if(messageList.get(i).getSourcePID().length() > 2 ){
+				s.add(messageList.get(i).getSourcePID());}
+				if(messageList.get(i).getDestiPIDList().size() >= 1){
+				s.addAll(messageList.get(i).getDestiPIDList());}
+				
 			}
 			particpantList = new ArrayList<String>();
 			particpantList.addAll(s);

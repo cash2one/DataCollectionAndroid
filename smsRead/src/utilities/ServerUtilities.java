@@ -56,23 +56,23 @@ public class ServerUtilities
 		catch (JSONException e1)
 		{
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		}
 		catch (ClientProtocolException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		catch (ParseException e)
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		catch (IOException e)
 		{
-			Log.i("ERROR", "Unable to connect to server");
+			//Log.i("ERROR", "Unable to connect to server");
 			return false;
 		}
-		Log.i("Is there a survey?", result.toString());
+		//Log.i("Is there a survey?", result.toString());
 		if (!(result.equals("null")) && result.length() < 100)
 		{
 			Uri uri = Uri.parse(result);

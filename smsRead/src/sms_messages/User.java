@@ -38,7 +38,7 @@ public class User
 			DStartDate = Startdate.getTime();
 		}
 		catch (Exception e) {
-			Log.e("Date error in user", "error",e);
+			//Log.e("Date error in user", "error",e);
 		}
 		long temp = sharedPref.getLong("lastUploaded", DStartDate);
 		this.date = new Date(temp);

@@ -29,7 +29,7 @@ public class Sms {
 		final String SMS_URI_ALL = "content://sms/";
 		//user is the users phone number
 		String user = theUser.getUser();
-		//date the user last upload or jan 1, 1970 by default
+		//date the user last upload or first day of study by default
 		Date lastUploaded = theUser.getDate();
 		List<MessageU> messageList = new ArrayList<MessageU>();
 		Uri uri = Uri.parse(SMS_URI_ALL);
@@ -57,6 +57,7 @@ public class Sms {
 					Body = cur.getString(index_Body);
 					theDate = cur.getLong(index_Date);
 					date = new Date(theDate);
+					//Log.i("SMS Date",date.toString());
 					theDate= (theDate/1000);
 					Type = cur.getInt(index_Type);
 					if(date.after(lastUploaded)){
@@ -76,17 +77,18 @@ public class Sms {
 						messageList.add(msgR);
 					} else if (Type == 2) {// sent
 						List<String> destiList = new ArrayList<String>();
+						if(!(Address.equals(""))){
 						destiList.add(Address);
 						MessageU msgS = new MessageU(mID, user, destiList,
 								Body, theDate);
-						messageList.add(msgS);
+						messageList.add(msgS);}
 					}}
 				} while (cur.moveToNext());
 
 			}
 
 		} catch (SQLiteException ex) {
-			Log.d("SQLiteException in getSmsInPhone", ex.getMessage());
+			//Log.d("SQLiteException in getSmsInPhone", ex.getMessage());
 		}finally{
 			cur.close();
 		}

@@ -28,7 +28,6 @@ public class SecondaryActivity extends Activity
 	private Button reRegisterButton;
 	private Button reOpenSurvey;
 	private Button getHelpButton;
-	private Button reportButton;
 	private Button helpButton;
 	private TextView uploadTimeText;
 	private SharedPreferences sharedPreferences;
@@ -73,15 +72,6 @@ public class SecondaryActivity extends Activity
 			}
 		});
 
-		reportButton = (Button) findViewById(R.id.reportBullyingButton);
-		reportButton.setOnClickListener(new OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				report();
-			}
-		});
-
 		helpButton = (Button) findViewById(R.id.helpButton);
 		helpButton.setOnClickListener(new OnClickListener()
 		{
@@ -117,14 +107,6 @@ public class SecondaryActivity extends Activity
 	protected void getHelp()
 	{
 		Uri uri = Uri.parse(MainActivity.GET_HELP_URL);
-		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		this.startActivity(intent);
-	}
-
-	protected void report()
-	{
-		Uri uri = Uri.parse(MainActivity.REPORT_BULLYING_URL);
 		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		this.startActivity(intent);

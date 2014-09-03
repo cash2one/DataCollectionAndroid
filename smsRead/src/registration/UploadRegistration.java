@@ -162,7 +162,6 @@ public class UploadRegistration extends AsyncTask<JSONObject, Void, String>
 		editor.putString("phone_number", phoneNumber);
 		// jan 1, 1970 a default to get all messages
 		Date date = new Date(0);
-		editor.putLong("lastUploaded", date.getTime());
 		
 		if (skippedFacebook)
 		{

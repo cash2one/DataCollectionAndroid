@@ -24,8 +24,8 @@ public class InternetUtilities
 				catch (UnknownHostException e)
 				{
 					// No internet
-					Log.i("ERROR",
-							"Could not access Facebook, must not have internet");
+					//Log.i("ERROR",
+							//"Could not access Facebook, must not have internet");
 					return false;
 				}
 				return true;
@@ -38,11 +38,11 @@ public class InternetUtilities
 		}
 		catch (InterruptedException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		catch (ExecutionException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return false;
 	}
