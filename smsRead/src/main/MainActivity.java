@@ -25,7 +25,7 @@ public class MainActivity extends Activity
 	public static final String POST_TOKEN_URL = BASE_URL + "/newtoken/";
 	public static final String SURVEY_URL = BASE_URL + "/survey/"; 
 	public static final String CREATE_USER_URL = BASE_URL + "/makeuser/";
-	public static final String GET_HELP_URL = BASE_URL + "/gethelp/";
+	public static final String GET_HELP_URL = BASE_URL + "/resources/";
 	public static final String REPORT_BULLYING_URL = BASE_URL
 			+ "/reportbullying/";
 	public static final String WITHDRAW_REQUEST_URL = BASE_URL + "/withdraw/";

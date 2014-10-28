@@ -4,6 +4,7 @@ import java.util.Date;
 
 import main.MainActivity;
 import registration.MakeUser;
+import sms_messages.MessageService;
 import sms_messages.User;
 import utilities.InterfaceUtilities;
 import android.app.Activity;
@@ -69,6 +70,8 @@ public class SecondaryActivity extends Activity
 			public void onClick(View v)
 			{
 				getHelp();
+				Intent service = new Intent(SecondaryActivity.this, MessageService.class);
+				startService(service);
 			}
 		});
 

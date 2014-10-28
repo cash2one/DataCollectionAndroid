@@ -28,7 +28,7 @@ public class InterfaceUtilities
 			+ "\n\t2) Press the Twitter button and login."
 			+ "\n\t3) Enter your phone number."
 			+ "\n\t4) Press submit."
-			+ "\nQuestions or comments? Contact support@uiowa.cyberbullying.edu";
+			+ "\nQuestions or comments? Contact cyber-bullying@uiowa.edu";
 	public static final String helpTitle = "Registration help";
 
 	public static final String privacyStatement = "All data will be stored on a secure "
@@ -39,11 +39,10 @@ public class InterfaceUtilities
 
 	public static final String errorStatement = "Found a bug? Have suggestions for us? "
 			+ "Want more information about this study?\n"
-			+ "Contact us at support@uiowa.cyberbullying.edu";
+			+ "Contact us at cyber-bullying@uiowa.edu";
 	public static final String errorTitle = "Report an Error";
 
-	public static final String withdrawStatement = "Want to withdraw from the study? Email "
-			+ "us at support@uiowa.cyberbullying.edu";
+	public static final String withdrawStatement = "Want to withdraw from the study? Press the button below.";
 	public static final String withdrawTitle = "Withdraw from Study";
 
 	public static void createHelpDialog(final Activity context)
@@ -79,7 +78,7 @@ public class InterfaceUtilities
 								public void onClick(DialogInterface dialog,
 										int which)
 								{
-									String recepientEmail = "support@uiowa.cyberbullying.edu";
+									String recepientEmail = "cyber-bullying@uiowa.edu";
 									Intent intent = new Intent(
 											Intent.ACTION_SENDTO);
 									intent.setData(Uri.parse("mailto:"
@@ -102,7 +101,7 @@ public class InterfaceUtilities
 								public void onClick(DialogInterface dialog,
 										int which)
 								{
-									String recepientEmail = "support@uiowa.cyberbullying.edu";
+									String recepientEmail = "cyber-bullying@uiowa.edu";
 									Intent intent = new Intent(
 											Intent.ACTION_SENDTO);
 									intent.setData(Uri.parse("mailto:"
