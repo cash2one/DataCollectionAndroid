@@ -75,7 +75,7 @@ public class MainActivity extends Activity
 		try
 		{
 			info = getPackageManager().getPackageInfo(
-					"edu.uiowa.datacollection.sms",
+					"edu.uiowa.datacollection.android",
 					PackageManager.GET_SIGNATURES);
 		}
 		catch (NameNotFoundException e1)

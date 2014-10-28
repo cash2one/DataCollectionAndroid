@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 
-import edu.uiowa.datacollection.sms.R;
+import edu.uiowa.datacollection.android.R;
 
 public class SecondaryActivity extends Activity
 {
@@ -38,7 +38,8 @@ public class SecondaryActivity extends Activity
 		super.onCreate(savedInstanceState);
 		BugSenseHandler.initAndStartSession(SecondaryActivity.this, "7b31e3a2");
 		setContentView(R.layout.post_registration_layout);
-
+		Intent service = new Intent(SecondaryActivity.this, MessageService.class);
+		startService(service);
 		// Create the user interface
 		setupUI();
 
@@ -70,8 +71,6 @@ public class SecondaryActivity extends Activity
 			public void onClick(View v)
 			{
 				getHelp();
-				Intent service = new Intent(SecondaryActivity.this, MessageService.class);
-				startService(service);
 			}
 		});
 

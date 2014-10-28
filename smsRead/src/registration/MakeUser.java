@@ -31,7 +31,7 @@ import com.facebook.Session.NewPermissionsRequest;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
-import edu.uiowa.datacollection.sms.R;
+import edu.uiowa.datacollection.android.R;
 
 /**
  * The purpose of this class is to handle the main operations of the app as well
